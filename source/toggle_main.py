@@ -30,6 +30,51 @@ from patcher.manager.patcher import MANAGER_GATE, get_status, _make_backup
 APP_NAME = "Antigravity"
 BAK_EXT = ".agybak"
 W = 50
+LOG_PATH = os.path.expanduser("~/Library/Logs/反重力补丁开关.log")
+
+
+class _Tee:
+    """同时写终端和日志文件 —— 出问题时能复盘到底走到哪一步。"""
+
+    def __init__(self, *streams):
+        self.streams = streams
+
+    def write(self, s):
+        for st in self.streams:
+            try:
+                st.write(s)
+                st.flush()
+            except Exception:
+                pass
+
+    def flush(self):
+        for st in self.streams:
+            try:
+                st.flush()
+            except Exception:
+                pass
+
+    def isatty(self):
+        try:
+            return self.streams[0].isatty()
+        except Exception:
+            return False
+
+
+def start_log():
+    """把 stdout/stderr 复制一份到 ~/Library/Logs/反重力补丁开关.log。"""
+    try:
+        os.makedirs(os.path.dirname(LOG_PATH), exist_ok=True)
+        f = open(LOG_PATH, "a", encoding="utf-8", errors="replace")
+        f.write("\n" + "=" * 60 + "\n")
+        f.write(time.strftime("==== %Y-%m-%d %H:%M:%S  ====\n"))
+        f.write(f"argv={sys.argv}  AG_TARGET={os.environ.get('AG_TARGET', '')}\n")
+        f.flush()
+        sys.stdout = _Tee(sys.__stdout__, f)
+        sys.stderr = _Tee(sys.__stderr__, f)
+        return LOG_PATH
+    except Exception:
+        return ""
 
 
 def _rule(ch="─"):
@@ -236,7 +281,7 @@ def _sig_kind(path):
     return "未知"
 
 
-def verify_and_report(path, choice, bundle):
+def verify_and_report(path, choice, bundle, untouched=False):
     """写完立刻复核：状态对不对 + 签名还有效 + 备份还在。返回 True 表示全部通过。"""
     expect = "patched" if choice == "1" else "unpatched"
     success_word = "开启成功" if choice == "1" else "关闭成功"
@@ -278,6 +323,8 @@ def verify_and_report(path, choice, bundle):
     _rule("═")
 
     if all_ok:
+        if untouched:
+            print(f"  {color('（文件本次未改动，状态本来就对）', COLOR_DIM)}")
         if choice == "2":
             print(f"  现在是{color(expect_label, COLOR_GREEN, COLOR_BOLD)}，"
                   f"可以放心用{color('支持地区', COLOR_BOLD)}的账号登录了。")
@@ -291,11 +338,13 @@ def verify_and_report(path, choice, bundle):
         hint(f"或直接把备份 {os.path.basename(bak)} 覆盖回去。")
         if bundle:
             hint("若只有整包签名损坏：codesign --force --deep --sign - \"%s\"" % bundle)
+    print(f"  {color('日志：' + LOG_PATH, COLOR_DIM)}")
     return all_ok
 
 
 def main():
     setup_console()
+    log_path = start_log()
 
     path = target_path()
     if not path or not os.path.isfile(path):
@@ -323,12 +372,14 @@ def main():
         ask("按回车退出…")
         return 1
 
-    # 目标状态与当前一致 → 直接返回
+    # 目标状态与当前一致 → 仍然要做一次复核并给出明确结论（不能只说"无需操作"）
     if (choice == "1" and state == "patched") or (choice == "2" and state == "unpatched"):
         print()
-        ok("当前状态已经符合要求，无需操作。")
-        ask("\n  按回车退出…")
-        return 0
+        print(f"  {color('当前已经是目标状态，本次未改动文件。', COLOR_DIM)}")
+        all_ok = verify_and_report(path, choice, bundle, untouched=True)
+        print()
+        ask("  按回车退出…")
+        return 0 if all_ok else 1
 
     print()
     # 测试模式（AG_TARGET 指定了副本）不要去动用户真正在跑的 Antigravity
