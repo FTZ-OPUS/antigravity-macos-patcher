@@ -156,6 +156,20 @@ def confirmed(question):
     return prompt_yn(question) in ("y", "yes", "\u0434", "\u0434\u0430")
 
 
+def ask_line(prompt):
+    """input() с корректной обработкой EOF (Ctrl-D) и Ctrl-C.
+
+    При запуске из .app / по двойному клику на macOS stdin может закрыться
+    (или пользователь нажимает Ctrl-D) — вместо traceback «EOF when reading
+    a line» просто выходим из программы с кодом 0.
+    """
+    try:
+        return input(prompt).strip()
+    except (EOFError, KeyboardInterrupt):
+        print()
+        raise SystemExit(0)
+
+
 def offer_download_and_block(software_name="Antigravity", target_type=None):
     err(f"{software_name} path is not set or software is not installed.")
     err("Patching attempt blocked.")
@@ -166,7 +180,7 @@ def offer_download_and_block(software_name="Antigravity", target_type=None):
     print_menu_row("0", "Return to main menu", "", COLOR_RED)
     print()
 
-    action = input(color("  Select option > ", COLOR_CYAN, COLOR_BOLD)).strip()
+    action = ask_line(color("  Select option > ", COLOR_CYAN, COLOR_BOLD)).strip()
     if action == "1":
         webbrowser.open(DOWNLOAD_URL)
         ok(f"Opening: {color(DOWNLOAD_URL, COLOR_CYAN)}")
@@ -175,7 +189,7 @@ def offer_download_and_block(software_name="Antigravity", target_type=None):
         print()
         hint(f"Enter the path to {software_name}.")
         print_path_examples()
-        raw = input(color(f"\n  {software_name} Path > ", COLOR_CYAN, COLOR_BOLD)).strip()
+        raw = ask_line(color(f"\n  {software_name} Path > ", COLOR_CYAN, COLOR_BOLD)).strip()
         if raw:
             if target_type == "ide" or software_name == "Antigravity IDE":
                 new_path = resolve_target_path(raw)
@@ -495,7 +509,7 @@ def run_cli():
         print_menu_row("0", "Skip for now (go to main menu)", "", COLOR_YELLOW)
         print()
 
-        act = input(color("  Select option > ", COLOR_CYAN, COLOR_BOLD)).strip()
+        act = ask_line(color("  Select option > ", COLOR_CYAN, COLOR_BOLD)).strip()
         if act == "1":
             webbrowser.open(DOWNLOAD_URL)
             ok(f"Opening: {color(DOWNLOAD_URL, COLOR_CYAN)}")
@@ -504,7 +518,7 @@ def run_cli():
             print()
             hint("Please specify the path to Antigravity IDE, Antigravity 2.0, or agy.")
             print_path_examples()
-            raw = input(color("\n  Path > ", COLOR_CYAN, COLOR_BOLD)).strip()
+            raw = ask_line(color("\n  Path > ", COLOR_CYAN, COLOR_BOLD)).strip()
             if raw:
                 ide_path = resolve_target_path(raw)
                 if ide_path and os.path.isdir(ide_path):
@@ -550,7 +564,7 @@ def run_cli():
         print_menu_row("0", "Exit", "quit the patcher", COLOR_RED)
         print_menu_footer("Tip: patches are reversible — use RESTORE any time.")
 
-        choice = input(color("\n  Select option > ", COLOR_CYAN, COLOR_BOLD)).strip()
+        choice = ask_line(color("\n  Select option > ", COLOR_CYAN, COLOR_BOLD)).strip()
         print()
 
         if choice == "0":
@@ -651,7 +665,7 @@ def run_cli():
                 print_menu_row("0", "Back", "return to main menu", COLOR_RED)
                 print_menu_footer("Leaves auto-detection results intact for other targets.")
 
-                sub_choice = input(color("\n  Select option > ", COLOR_CYAN, COLOR_BOLD)).strip()
+                sub_choice = ask_line(color("\n  Select option > ", COLOR_CYAN, COLOR_BOLD)).strip()
                 if sub_choice == "0":
                     handled = False
                     break
@@ -660,7 +674,7 @@ def run_cli():
                      print()
                      hint("Enter the path to Antigravity IDE folder or main.js file.")
                      print_path_examples()
-                     raw = input(color("\n  IDE Path > ", COLOR_CYAN, COLOR_BOLD)).strip()
+                     raw = ask_line(color("\n  IDE Path > ", COLOR_CYAN, COLOR_BOLD)).strip()
                      if raw:
                          new_path = resolve_target_path(raw)
                          if new_path and os.path.exists(new_path):
@@ -680,7 +694,7 @@ def run_cli():
                      print()
                      hint("Enter the path to Antigravity 2.0 app folder or language_server binary.")
                      print_path_examples()
-                     raw = input(color("\n  Antigravity 2.0 Path > ", COLOR_CYAN, COLOR_BOLD)).strip()
+                     raw = ask_line(color("\n  Antigravity 2.0 Path > ", COLOR_CYAN, COLOR_BOLD)).strip()
                      if raw:
                          new_path = resolve_manager_path(raw)
                          if new_path and os.path.isfile(new_path):
@@ -695,7 +709,7 @@ def run_cli():
                      print()
                      hint("Enter the path to the agy binary (agy.exe) or its folder.")
                      print_path_examples()
-                     raw = input(color("\n  AGY Path > ", COLOR_CYAN, COLOR_BOLD)).strip()
+                     raw = ask_line(color("\n  AGY Path > ", COLOR_CYAN, COLOR_BOLD)).strip()
                      if raw:
                          new_path = resolve_agy_path(raw)
                          if new_path and os.path.isfile(new_path):
@@ -710,7 +724,7 @@ def run_cli():
                      print()
                      hint("Enter the path to extension.js, the google.google-antigravity-*")
                      hint("extension folder, or the .vscode/extensions root folder.")
-                     raw = input(color("\n  VS Code Extension Path (JS) > ", COLOR_CYAN, COLOR_BOLD)).strip()
+                     raw = ask_line(color("\n  VS Code Extension Path (JS) > ", COLOR_CYAN, COLOR_BOLD)).strip()
                      if raw:
                          new_path = resolve_extension_path(raw)
                          if new_path and os.path.isfile(new_path):
@@ -725,7 +739,7 @@ def run_cli():
                      print()
                      hint(f"Enter the path to the agy/antigravity binary downloaded")
                      hint(f"by the extension ({describe_gemini_binary_path()}) or any agy file.")
-                     raw = input(color("\n  VS Code Binary Path (agy) > ", COLOR_CYAN, COLOR_BOLD)).strip()
+                     raw = ask_line(color("\n  VS Code Binary Path (agy) > ", COLOR_CYAN, COLOR_BOLD)).strip()
                      if raw:
                          new_path = resolve_agy_path(raw)
                          if new_path and os.path.isfile(new_path):

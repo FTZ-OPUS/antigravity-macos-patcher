@@ -60,9 +60,9 @@ def find_portable_candidates(search_type="ide"):
             except Exception:
                 pass
 
-    # 3. Текущая директория запуска
+    # 3. Текущая директория запуска (но не корень ФС: у .app из Finder cwd = "/")
     cwd = os.getcwd()
-    if cwd and os.path.isdir(cwd):
+    if cwd and os.path.isdir(cwd) and os.path.abspath(cwd) not in ("/", "/System", "/Library", "/usr"):
         roots.append(cwd)
 
     # 4. Корни других дисков для Windows

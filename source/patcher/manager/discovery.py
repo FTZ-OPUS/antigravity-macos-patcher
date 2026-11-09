@@ -84,8 +84,16 @@ def _posix_candidate_roots():
         out.append("/Applications")
         if user_home:
             out.append(os.path.join(user_home, "Applications"))
+            # .app, скопированный из DMG, часто лежит прямо на Рабочем столе /
+            # в Загрузках / Документах (особенно когда /Applications недоступен)
+            for sub in ("Desktop", "Downloads", "Documents"):
+                p = os.path.join(user_home, sub)
+                if os.path.isdir(p):
+                    out.append(p)
         else:
             out.append(os.path.expanduser("~/Applications"))
+            for sub in ("Desktop", "Downloads", "Documents"):
+                out.append(os.path.expanduser("~/" + sub))
     
     if user_home:
         out.append(os.path.join(user_home, ".local/share"))

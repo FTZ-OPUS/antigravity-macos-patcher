@@ -383,8 +383,9 @@ def do_patch_manager(path):
         return
 
     hash_after = file_hash(path)
-    resign_macos_bundle(path)
     resign_macos_binary(path)
+    resign_macos_bundle(path)
+
     print()
     step("Patch manager binary", True, matched_gate.desc)
     print()
@@ -444,8 +445,9 @@ def do_restore_manager(path):
         return
 
     hash_after = file_hash(path)
-    resign_macos_bundle(path)
     resign_macos_binary(path)
+    resign_macos_bundle(path)
+
     print()
     panel_rows = [("Target", os.path.basename(path))]
     if hash_before and hash_after and hash_before != hash_after:

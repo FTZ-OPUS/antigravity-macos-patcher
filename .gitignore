@@ -1,0 +1,13 @@
+# Сборка / venv
+.venv/
+.venv-build/
+build/
+dist/
+*.spec
+
+# Python
+__pycache__/
+*.pyc
+
+# macOS
+.DS_Store

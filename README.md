@@ -393,6 +393,14 @@ python3 main.py /usr/local/bin/agy
 
 ### 🍎 Использование на macOS
 
+> **Apple Silicon (arm64): готовое .app + одна команда сборки.**
+> В этом форке добавлена нативная сборка под Apple Silicon: `source/build_macos.sh` собирает
+> Mach-O arm64 one-file бинарь и упаковывает его в `dist/Open AG Patcher.app`
+> (двойной клик → меню в Terminal). Подробности по-китайски: [`MACOS_APPLE_SILICON_zh.md`](./MACOS_APPLE_SILICON_zh.md).
+> ```bash
+> cd source && ./build_macos.sh      # PYTHON=/path/to/arm64/python3 ./build_macos.sh
+> ```
+
 Поскольку готовые бинарные сборки для macOS отсутствуют в официальных релизах (доступны только для Windows и Linux), вы можете либо запускать патчер напрямую из исходного кода, либо собрать исполняемый файл самостоятельно.
 
 #### Вариант 1: Запуск из исходного кода (рекомендуется)
