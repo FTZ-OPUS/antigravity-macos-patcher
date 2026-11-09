@@ -394,6 +394,8 @@ python3 main.py /usr/local/bin/agy
 ### 🍎 Использование на macOS
 
 > **Apple Silicon (arm64): готовое .app + одна команда сборки.**
+> Скачать готовое: [**Releases → macOS Apple Silicon (arm64)**](https://github.com/FTZ-OPUS/antigravity-macos-patcher/releases/latest)
+> (`Open-AG-Patcher-macOS-arm64.zip` → распаковать → двойной клик по `Open AG Patcher.app`).
 > В этом форке добавлена нативная сборка под Apple Silicon: `source/build_macos.sh` собирает
 > Mach-O arm64 one-file бинарь и упаковывает его в `dist/Open AG Patcher.app`
 > (двойной клик → меню в Terminal). Подробности по-китайски: [`MACOS_APPLE_SILICON_zh.md`](./MACOS_APPLE_SILICON_zh.md).
