@@ -2,23 +2,19 @@
 # ---------------------------------------------------------------------------
 # Open AG Patcher — нативная сборка под macOS Apple Silicon (arm64).
 #
-# Что делает:
-#   1. создаёт отдельный venv для сборки (.venv-build) и ставит PyInstaller;
-#   2. конвертирует icon.ico -> icon.icns;
-#   3. собирает one-file arm64 бинарь (Mach-O arm64, ad-hoc подпись);
-#   4. упаковывает его в .app-бандл с иконкой и запуском в Terminal;
-#   5. подписывает бандл ad-hoc и снимает quarantine.
+# Собирает ДВА .app:
+#   1. dist/Open AG Patcher.app    — полный патчер (меню 1..12, patch/restore)
+#   2. dist/反重力补丁开关.app      — переключатель вкл/выкл для одного бинаря
+#
+# Что делает скрипт:
+#   venv -> icon.ico→icon.icns -> PyInstaller onefile arm64 -> .app bundle
+#   -> ad-hoc подпись -> снятие quarantine
 #
 # Использование:
 #   cd source && ./build_macos.sh
-#   PYTHON=/path/to/python3 ./build_macos.sh     # свой интерпретатор
-#
-# Результат:  ../dist/Open AG Patcher.app  и  ../dist/OpenAGPatcher (CLI)
+#   PYTHON=/path/to/arm64/python3 ./build_macos.sh
 # ---------------------------------------------------------------------------
 set -euo pipefail
-
-NAME="OpenAGPatcher"
-APP_NAME="Open AG Patcher"
 
 SOURCE_DIR="$(cd "$(dirname "$0")" && pwd)"
 REPO_DIR="$(cd "$SOURCE_DIR/.." && pwd)"
@@ -26,7 +22,6 @@ VERSION="$(sed -n 's/^VERSION *= *"\([^"]*\)".*/\1/p' "$SOURCE_DIR/patcher/const
 VERSION="${VERSION:-1.0.0}"
 VENV="$REPO_DIR/.venv-build"
 DIST="$REPO_DIR/dist"
-APP="$DIST/$APP_NAME.app"
 PYTHON="${PYTHON:-python3}"
 
 echo "==> Python: $($PYTHON -V 2>&1)"
@@ -58,40 +53,48 @@ if [ ! -f "$ICNS" ] || [ "$SOURCE_DIR/icon.ico" -nt "$ICNS" ]; then
   iconutil -c icns "$TMP_ICONSET" -o "$ICNS"
 fi
 
-echo "==> PyInstaller (arm64, onefile)"
-cd "$REPO_DIR"
 mkdir -p "$DIST" "$REPO_DIR/build"
-rm -rf "$DIST/$NAME" "$REPO_DIR/build/$NAME"
-"$VENV/bin/python" -m PyInstaller \
-  --noconfirm --clean --onefile \
-  --target-arch arm64 \
-  --name "$NAME" \
-  --icon "$ICNS" \
-  --distpath "$DIST" \
-  --workpath "$REPO_DIR/build" \
-  --specpath "$REPO_DIR/build" \
-  --hidden-import=packaging \
-  --hidden-import=packaging.version \
-  --hidden-import=packaging.specifiers \
-  --hidden-import=packaging.requirements \
-  "$SOURCE_DIR/main.py" > "$REPO_DIR/build/pyinstaller.log" 2>&1 || {
-    echo "!! Сборка упала, лог: $REPO_DIR/build/pyinstaller.log"; tail -30 "$REPO_DIR/build/pyinstaller.log"; exit 1; }
+cd "$REPO_DIR"
 
-BIN="$DIST/$NAME"
-[ -f "$BIN" ] || { echo "!! Не найден $BIN"; exit 1; }
+# build_one <entry.py> <bin_name> <app_dir_name> <bundle_id> <display_name>
+build_one() {
+  local entry="$1" bin_name="$2" app_dir="$3" bundle_id="$4" display="$5"
+  local log="$REPO_DIR/build/pyinstaller-$bin_name.log"
 
-echo "==> .app bundle"
-rm -rf "$APP"
-mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
-cp "$BIN" "$APP/Contents/Resources/$NAME.bin"
-cp "$ICNS" "$APP/Contents/Resources/app.icns"
+  echo "==> PyInstaller: $bin_name (arm64, onefile)"
+  rm -rf "$DIST/$bin_name" "$REPO_DIR/build/$bin_name"
+  "$VENV/bin/python" -m PyInstaller \
+    --noconfirm --clean --onefile \
+    --target-arch arm64 \
+    --name "$bin_name" \
+    --icon "$ICNS" \
+    --distpath "$DIST" \
+    --workpath "$REPO_DIR/build" \
+    --specpath "$REPO_DIR/build" \
+    --paths "$SOURCE_DIR" \
+    --hidden-import=packaging \
+    --hidden-import=packaging.version \
+    --hidden-import=packaging.specifiers \
+    --hidden-import=packaging.requirements \
+    "$SOURCE_DIR/$entry" > "$log" 2>&1 || {
+      echo "!! Сборка $bin_name упала, лог: $log"; tail -30 "$log"; exit 1; }
 
-cat > "$APP/Contents/Resources/run.command" <<'LAUNCH'
+  local bin="$DIST/$bin_name"
+  [ -f "$bin" ] || { echo "!! Не найден $bin"; exit 1; }
+
+  local app="$DIST/$app_dir"
+  echo "==> .app: $app_dir"
+  rm -rf "$app"
+  mkdir -p "$app/Contents/MacOS" "$app/Contents/Resources"
+  cp "$bin" "$app/Contents/Resources/app.bin"
+  cp "$ICNS" "$app/Contents/Resources/app.icns"
+
+  # Запускается в Terminal: рабочая папка = home (иначе автопоиск сканирует "/"),
+  # PATH берётся из login-shell, окно остаётся открытым до нажатия клавиши.
+  cat > "$app/Contents/Resources/run.command" <<'LAUNCH'
 #!/bin/bash
-# Запускается в Terminal из .app: рабочая папка = home (чтобы автопоиск
-# не сканировал "/"), PATH берётся из login-shell.
 cd "$HOME" || cd /
-BIN="$(cd "$(dirname "$0")" && pwd)/OpenAGPatcher.bin"
+BIN="$(cd "$(dirname "$0")" && pwd)/app.bin"
 "$BIN" "$@"
 status=$?
 echo
@@ -99,34 +102,31 @@ echo "[i] Готово (код $status). Нажмите любую клавиш�
 read -n 1 -s 2>/dev/null || true
 exit $status
 LAUNCH
-chmod +x "$APP/Contents/Resources/run.command"
+  chmod +x "$app/Contents/Resources/run.command"
 
-cat > "$APP/Contents/MacOS/$NAME" <<'STUB'
+  # Двойной клик по .app -> меню в отдельном окне Terminal
+  # (бинарник интерактивный: ему нужен настоящий TTY для sudo и ожидания клавиш).
+  cat > "$app/Contents/MacOS/launcher" <<'STUB'
 #!/bin/bash
-# Двойной клик по .app -> показываем меню патчера в отдельном окне Terminal.
-# (Сам бинарь интерактивный: ему нужен настоящий TTY для sudo и ожидания клавиш.)
 HERE="$(cd "$(dirname "$0")" && pwd)"
 RUN="$HERE/../Resources/run.command"
 chmod +x "$RUN" 2>/dev/null
-
 if /usr/bin/open -a Terminal "$RUN" >/dev/null 2>&1; then
     exit 0
 fi
-
-# Terminal недоступен (крайний случай) — запускаем в текущем терминале.
-exec "$HERE/../Resources/$NAME.bin" "$@"
+exec "$HERE/../Resources/app.bin" "$@"
 STUB
-chmod +x "$APP/Contents/MacOS/$NAME"
+  chmod +x "$app/Contents/MacOS/launcher"
 
-cat > "$APP/Contents/Info.plist" <<PLIST
+  cat > "$app/Contents/Info.plist" <<PLIST
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    <key>CFBundleName</key><string>$APP_NAME</string>
-    <key>CFBundleDisplayName</key><string>$APP_NAME</string>
-    <key>CFBundleIdentifier</key><string>ru.avencores.openagpatcher</string>
-    <key>CFBundleExecutable</key><string>$NAME</string>
+    <key>CFBundleName</key><string>$display</string>
+    <key>CFBundleDisplayName</key><string>$display</string>
+    <key>CFBundleIdentifier</key><string>$bundle_id</string>
+    <key>CFBundleExecutable</key><string>launcher</string>
     <key>CFBundleIconFile</key><string>app.icns</string>
     <key>CFBundlePackageType</key><string>APPL</string>
     <key>CFBundleShortVersionString</key><string>$VERSION</string>
@@ -135,21 +135,26 @@ cat > "$APP/Contents/Info.plist" <<PLIST
     <key>LSMinimumSystemVersion</key><string>11.0</string>
     <key>LSApplicationCategoryType</key><string>public.app-category.utilities</string>
     <key>NSHighResolutionCapable</key><true/>
-    <key>NSAppleEventsUsageDescription</key>
-    <string>Открывает Terminal, чтобы показать меню патчера.</string>
 </dict>
 </plist>
 PLIST
 
-echo "==> codesign (ad-hoc) + quarantine"
-/usr/bin/codesign --force --deep --sign - "$BIN" >/dev/null 2>&1 || true
-/usr/bin/codesign --force --deep --sign - "$APP" >/dev/null 2>&1 || true
-/usr/bin/xattr -dr com.apple.quarantine "$APP" 2>/dev/null || true
-/usr/bin/xattr -dr com.apple.quarantine "$BIN" 2>/dev/null || true
+  echo "==> codesign (ad-hoc) + quarantine: $app_dir"
+  /usr/bin/codesign --force --deep --sign - "$bin" >/dev/null 2>&1 || true
+  /usr/bin/codesign --force --deep --sign - "$app" >/dev/null 2>&1 || true
+  /usr/bin/xattr -dr com.apple.quarantine "$app" 2>/dev/null || true
+  /usr/bin/xattr -dr com.apple.quarantine "$bin" 2>/dev/null || true
+
+  echo "    $app"
+  echo "    $bin"
+  /usr/bin/file "$bin" | sed 's/^/    /'
+}
+
+build_one "main.py"        "OpenAGPatcher" "Open AG Patcher.app"     "ru.avencores.openagpatcher" "Open AG Patcher"
+build_one "toggle_main.py" "AGToggle"      "反重力补丁开关.app"       "ru.avencores.agtoggle"      "反重力补丁开关"
 
 echo
 echo "OK:"
-echo "  $APP"
-echo "  $BIN"
-/usr/bin/file "$BIN"
-/usr/bin/codesign -dv "$APP" 2>&1 | /usr/bin/grep -i "Signature" || true
+ls -d "$DIST"/*.app
+echo
+/usr/bin/codesign -dv "$DIST/Open AG Patcher.app" 2>&1 | /usr/bin/grep -i "Signature" || true
