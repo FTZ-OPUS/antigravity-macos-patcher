@@ -64,7 +64,7 @@ build_one() {
   local log="$REPO_DIR/build/pyinstaller-$bin_name.log"
 
   echo "==> PyInstaller: $bin_name (arm64, onefile)"
-  rm -rf "$DIST/$bin_name" "$REPO_DIR/build/$bin_name"
+  /bin/rm -rf "$DIST/$bin_name" "$REPO_DIR/build/$bin_name"
   "$VENV/bin/python" -m PyInstaller \
     --noconfirm --clean --onefile \
     --target-arch arm64 \
@@ -86,7 +86,7 @@ build_one() {
 
   local app="$DIST/$app_dir"
   echo "==> .app: $app_dir"
-  rm -rf "$app"
+  /bin/rm -rf "$app"
   mkdir -p "$app/Contents/MacOS" "$app/Contents/Resources"
   cp "$bin" "$app/Contents/Resources/app.bin"
   cp "$ICNS" "$app/Contents/Resources/app.icns"
@@ -155,8 +155,43 @@ PLIST
 build_one "main.py"        "OpenAGPatcher" "Open AG Patcher.app"     "ru.avencores.openagpatcher" "Open AG Patcher"
 build_one "toggle_main.py" "AGToggle"      "反重力补丁开关.app"       "ru.avencores.agtoggle"      "反重力补丁开关"
 
+# 图形界面版：PyInstaller 自己产出 .app（--windowed 不弹终端），再改名成中文
+# 注意：Tk 在 onefile 模式下常报 "Tcl wasn't installed properly"，图形版必须用 onedir。
+build_gui() {
+  local name="AGPatchGUI" app_dir="反重力补丁.app"
+  local log="$REPO_DIR/build/pyinstaller-$name.log"
+  echo "==> PyInstaller: $name (arm64, onedir, windowed)"
+  /bin/rm -rf "$DIST/$name.app" "$DIST/$app_dir" "$REPO_DIR/build/$name"
+  "$VENV/bin/python" -m PyInstaller \
+    --noconfirm --clean --onedir --windowed \
+    --target-arch arm64 \
+    --name "$name" \
+    --icon "$ICNS" \
+    --osx-bundle-identifier "ru.avencores.agpatchgui" \
+    --distpath "$DIST" \
+    --workpath "$REPO_DIR/build" \
+    --specpath "$REPO_DIR/build" \
+    --paths "$SOURCE_DIR" \
+    --hidden-import=packaging \
+    --hidden-import=packaging.version \
+    "$SOURCE_DIR/gui_main.py" > "$log" 2>&1 || {
+      echo "!! Сборка $name упала, лог: $log"; tail -30 "$log"; exit 1; }
+
+  [ -d "$DIST/$name.app" ] || { echo "!! Не найден $DIST/$name.app"; exit 1; }
+  mv "$DIST/$name.app" "$DIST/$app_dir"
+  /usr/libexec/PlistBuddy -c "Set :CFBundleName 反重力补丁" "$DIST/$app_dir/Contents/Info.plist" 2>/dev/null || true
+  /usr/libexec/PlistBuddy -c "Add :CFBundleDisplayName string 反重力补丁" "$DIST/$app_dir/Contents/Info.plist" 2>/dev/null \
+    || /usr/libexec/PlistBuddy -c "Set :CFBundleDisplayName 反重力补丁" "$DIST/$app_dir/Contents/Info.plist" 2>/dev/null || true
+  /usr/bin/codesign --force --deep --sign - "$DIST/$app_dir" >/dev/null 2>&1 || true
+  /usr/bin/xattr -dr com.apple.quarantine "$DIST/$app_dir" 2>/dev/null || true
+  echo "    $DIST/$app_dir"
+}
+
+build_gui
+
 echo
 echo "OK:"
 ls -d "$DIST"/*.app
 echo
 /usr/bin/codesign -dv "$DIST/Open AG Patcher.app" 2>&1 | /usr/bin/grep -i "Signature" || true
+/usr/bin/codesign --verify --deep --strict "$DIST/反重力补丁.app" && echo "反重力补丁.app 签名校验通过"

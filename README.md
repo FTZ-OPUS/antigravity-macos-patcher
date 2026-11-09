@@ -1,763 +1,392 @@
 <div align="center">
-    <a href="https://www.youtube.com/@avencores/" target="_blank">
-      <img src="https://github.com/user-attachments/assets/338bcd74-e3c3-4700-87ab-7985058bd17e" alt="YouTube" height="40">
-    </a>
-    <a href="https://t.me/avencoresyt" target="_blank">
-      <img src="https://github.com/user-attachments/assets/939f8beb-a49a-48cf-89b9-d610ee5c4b26" alt="Telegram" height="40">
-    </a>
-    <a href="https://vk.ru/avencoresreuploads" target="_blank">
-      <img src="https://github.com/user-attachments/assets/dc109dda-9045-4a06-95a5-3399f0e21dc4" alt="VK" height="40">
-    </a>
-    <a href="https://dzen.ru/avencores" target="_blank">
-      <img src="https://github.com/user-attachments/assets/bd55f5cf-963c-4eb8-9029-7b80c8c11411" alt="Dzen" height="40">
-    </a>
-</div>
 
-# 🔑 Open AG Patcher
-<p align="center">
-  <a href="https://github.com/AvenCores/open-antigravity-patcher"><img src="https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54" alt="Python"></a>
-  <a href="./LICENSE"><img src="https://img.shields.io/badge/License-GPL--3.0-blue?style=for-the-badge" alt="GPL-3.0 License"></a>
-  <a href="https://github.com/AvenCores/open-antigravity-patcher/releases/latest"><img src="https://img.shields.io/github/v/release/AvenCores/open-antigravity-patcher?style=for-the-badge" alt="Latest release"></a>
-  <a href="https://github.com/AvenCores/open-antigravity-patcher/stargazers"><img src="https://img.shields.io/github/stars/AvenCores/open-antigravity-patcher?style=for-the-badge" alt="GitHub stars"></a>
-  <img src="https://img.shields.io/github/forks/AvenCores/open-antigravity-patcher?style=for-the-badge" alt="GitHub forks">
-  <a href="https://github.com/AvenCores/open-antigravity-patcher/watchers">
-  <img src="https://img.shields.io/github/watchers/AvenCores/open-antigravity-patcher?style=for-the-badge" alt="GitHub Watchers"></a>
-  <a href="https://github.com/AvenCores/open-antigravity-patcher/releases"><img src="https://img.shields.io/github/downloads/AvenCores/open-antigravity-patcher/total?style=for-the-badge" alt="Downloads"></a>
-  <a href="https://github.com/AvenCores/open-antigravity-patcher/pulls"><img src="https://img.shields.io/github/issues-pr/AvenCores/open-antigravity-patcher?style=for-the-badge" alt="GitHub pull requests"></a>
-  <a href="https://github.com/AvenCores/open-antigravity-patcher/issues"><img src="https://img.shields.io/github/issues/AvenCores/open-antigravity-patcher?style=for-the-badge" alt="GitHub issues"></a>
-</p>
+**macOS Apple Silicon（arm64）原生版 · 中文文档**
 
-Опенсорс патчер для Antigravity 2.0, Antigravity IDE, Antigravity CLI и расширения Google Antigravity для VS Code: снимает регионные ограничения без VPN и смены региона аккаунта Google. Опенсурс аналог утилиты [Antigravity IDE в России без VPN и смены региона аккаунта Google](https://github.com/confeden/Antigravity).
-
-![maxresdefault](https://i.ibb.co/s9Vh80CM/python-w-TPlox-Po-G4.png)
-
-# 🎦 Видео гайд по установке и решению проблем
-
-![maxresdefault](https://github.com/user-attachments/assets/54c4f1bd-01f5-4ee8-92d1-f7bbb910d079)
-
-<div align="center">
-
-[**Смотреть на YouTube**](https://youtu.be/GyQVTxgt12E)
-
-[**Смотреть на Rutube**](https://rutube.ru/video/aba4484f8e0b5e67e966ff8229385f83/)
-
-[**Смотреть на Dzen**](https://dzen.ru/video/watch/6a7c430575822e0e4ba2970e)
-
-[**Смотреть в VK Video**](https://vkvideo.ru/video-234234162_456239108)
-
-[**Смотреть в Telegram**](https://t.me/avencoreschat/571689)
+[![Release](https://img.shields.io/github/v/release/FTZ-OPUS/antigravity-macos-patcher?style=for-the-badge)](https://github.com/FTZ-OPUS/antigravity-macos-patcher/releases/latest)
+<img src="https://img.shields.io/badge/platform-macOS%20arm64-000000?style=for-the-badge&logo=apple" alt="macOS arm64">
+<img src="https://img.shields.io/badge/python-3.9%2B-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54" alt="Python">
+<a href="./LICENSE"><img src="https://img.shields.io/badge/License-GPL--3.0-blue?style=for-the-badge" alt="GPL-3.0"></a>
 
 </div>
 
-## ⚠️ Ошибка HTTP 500 Internal Server Error
-Если при запросе в Antigravity IDE появляется ошибка HTTP 500 Internal Server Error, то ничего не поделать, меняйте аккаунт (желательно на регион, где Antigravity IDE официально работает или куплена платная подписка), платная утилита также её не решала.
+# 🔑 反重力补丁（Open AG Patcher · macOS 增强版）
 
-**Пример ошибки**
-```
-Trajectory ID: 2669b09c-1d11-4620-9bfa-6ad1f0e26a88
-Error: HTTP 500 Internal Server Error
-Sherlog: 
-TraceID: 0xd9ada64bcca3260c
-Headers: {"Alt-Svc":["h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000"],"Content-Length":["109"],"Content-Type":["text/event-stream"],"Date":["Sat, 14 Mar 2026 13:51:24 GMT"],"Server":["ESF"],"Server-Timing":["gfet4t7; dur=423"],"Vary":["Origin","X-Origin","Referer"],"X-Cloudaicompanion-Trace-Id":["d9ada64bcca3260c"],"X-Content-Type-Options":["nosniff"],"X-Frame-Options":["SAMEORIGIN"],"X-Xss-Protection":["0"]}
+针对 **Antigravity 2.0 桌面版 / Antigravity IDE / Antigravity CLI（`agy`）/ VS Code 的 Google Antigravity 扩展** 的开源补丁工具：**无需 VPN、无需更换 Google 账号地区** 即可解除地区限制。
 
-{
-  "error": {
-    "code": 500,
-    "message": "Internal error encountered.",
-    "status": "INTERNAL"
-  }
-}
-```
+本仓库是 [AvenCores/open-antigravity-patcher](https://github.com/AvenCores/open-antigravity-patcher) `v1.3.8` 的**二次开发分支**：把上游文档完整译为中文，并补上 macOS Apple Silicon 的原生支持（双击即用，不需要装 Python、不需要敲命令）。
 
-## ⚠️ Ошибка HTTP 403 Forbidden / SUBSCRIPTION_REQUIRED (#3501) / Agent execution terminated due to error
-Если в Antigravity IDE или CLI (`agy`) появляется ошибка `HTTP 403 Forbidden` с причиной `SUBSCRIPTION_REQUIRED` или сообщением `You do not have a valid license of this product` или `Agent execution terminated due to error`, это не проблема локального патча и не экран `Eligibility Check`.
+> 俄文原版文档保留在 [`README.ru.md`](./README.ru.md)，macOS 改造细节见 [`MACOS_APPLE_SILICON_zh.md`](./MACOS_APPLE_SILICON_zh.md)。
 
-Эта ошибка связана с API Google и состоянием аккаунта пользователя: лицензией, доступом или проверкой прав на стороне Google. Патчер меняет только локальные файлы Antigravity/Antigravity CLI и не может выдать аккаунту лицензию или изменить ответ Google API, поэтому с этой ошибкой он не поможет.
+---
 
-**Решение:**
-1. **Смените регион аккаунта Google** или используйте аккаунт, зарегистрированный в регионе, где Antigravity официально работает.
-2. **Если смена региона не помогает**, необходимо купить официальную подписку.
+## 🌟 本分支的二次开发内容
 
-**Доступные тарифные планы (Google AI):**
+上游只有 Windows / Linux 的成品二进制，macOS 只能自己开终端跑源码。本分支补齐了这些：
 
-*   **Google AI Plus**
-    *   **Цена:** 445 ₽ в месяц
-    *   **Хранилище:** 400 ГБ
-    *   **Возможности:** Используйте ИИ-инструменты для продуктивной работы и увеличенные в 2 раза лимиты* в Gemini.
-    *   [Оформить подписку Plus](https://one.google.com/about/google-ai-plans/) | [Посмотреть преимущества тарифа](https://one.google.com/about/google-ai-plans/) *(Есть условия)*
-*   **Google AI Pro**
-    *   **Цена:** 1 790 ₽/мес.
-    *   **Хранилище:** 5 ТБ
-    *   **Возможности:** Успевайте больше с увеличенными в 4 раза лимитами* в Gemini.
-    *   [Оформить подписку Pro](https://one.google.com/about/google-ai-plans/) | [Посмотреть преимущества тарифа](https://one.google.com/about/google-ai-plans/) *(Есть условия)*
-*   **Google AI Ultra**
-    *   **Цена:** От 6 990 ₽/мес.
-    *   **Хранилище:** От 20 ТБ
-    *   **Возможности:** Ускорьте рабочие процессы с увеличенными в 20 раз лимитами* в Gemini.
-    *   [Оформить подписку Ultra](https://one.google.com/about/google-ai-plans/) | [Посмотреть преимущества тарифа](https://one.google.com/about/google-ai-plans/) *(Есть условия)*
+| 改动 | 说明 |
+|---|---|
+| **macOS 原生 App（arm64）** | `反重力补丁.app`：图形界面，两个按钮（开启 / 关闭），点完直接显示「开启成功 / 开启失败 / 关闭成功 / 关闭失败」 |
+| **一键补丁开关** | `反重力补丁开关.app`：终端菜单版开关，适合多账号切换（受支持地区用原版、不支持地区用补丁） |
+| **完整版 App** | `Open AG Patcher.app`：保留上游全部 12 项功能（IDE / 2.0 / CLI / VS Code 四项补丁 + 四项还原 + 工具） |
+| **构建脚本** | `source/build_macos.sh`：一条命令产出上面三个 App（venv → icns → PyInstaller arm64 → .app → ad-hoc 签名 → 去 quarantine） |
+| **中文文档** | 本文件 + `MACOS_APPLE_SILICON_zh.md` |
 
-**Пример ошибки:**
-```json
-{
-  "error": {
-    "code": 403,
-    "details": [
-      {
-        "@type": "type.googleapis.com/google.rpc.ErrorInfo",
-        "domain": "cloudaicompanion.googleapis.com",
-        "metadata": {
-          "error_number": "1001",
-          "uiMessage": "true"
-        },
-        "reason": "SUBSCRIPTION_REQUIRED"
-      }
-    ],
-    "message": "You do not have a valid license of this product. Please contact your administrator to request a license. If you are not an enterprise user and believe you are receiving this message as an error, please try using the latest version and logging in again. (#3501)",
-    "status": "PERMISSION_DENIED"
-  }
-}
+顺手修掉的上游问题：
+
+1. **桌面版找不到**：`Antigravity.app` 从 DMG 拖到桌面/下载/文稿时，上游只扫 `/Applications`，会报「Antigravity 2.0 → 未找到」。现在会扫 `~/Desktop`、`~/Downloads`、`~/Documents`。
+2. **整包签名被写坏**：上游先重签 `.app` 再重签内部二进制，后者会让整包密封（`_CodeSignature/CodeResources`）失配，`codesign --verify --deep --strict` 报 `a sealed resource is missing or invalid`。现在改为**先内部二进制、后整包**。
+3. **双击启动抛异常**：stdin 关闭时 `input()` 抛 `EOFError`，被顶层捕获成「Unexpected error: EOF when reading a line」。现在按 Ctrl-D 或没有输入时干净退出。
+4. **Finder 启动扫全盘**：启动时 `cwd` 是 `/`，便携版搜索会 `os.walk("/")` 白等很久。现在跳过根目录类路径。
+5. **构建命令不可用**：上游 `--target-arch universal2` 在 arm64-only 的 Python（python.org / Homebrew）上必然失败，脚本改为直接出 arm64。
+
+---
+
+## 📦 下载与使用
+
+**成品在 [Releases](https://github.com/FTZ-OPUS/antigravity-macos-patcher/releases/latest) 页面**：
+
+| 附件 | 说明 |
+|---|---|
+| `反重力补丁.app` | ⭐ 推荐：图形界面，两个按钮，最简单 |
+| `反重力补丁开关.app` | 终端菜单版开关（多账号切换用） |
+| `Open AG Patcher.app` | 完整版（含 IDE / CLI / VS Code 扩展补丁） |
+
+**图形版怎么用（小白向）**
+
+1. 先 `Cmd+Q` 完全退出 Antigravity（Dock 里不能有小圆点）
+2. 双击 `反重力补丁.app`
+3. 顶部会显示当前状态：`● 已打补丁（开启）` 或 `○ 原版（未打补丁）`
+4. 点 **开启补丁**（登不支持地区的账号）或 **关闭补丁**（登支持地区的账号）
+5. 下方立刻显示结果：
+   - `开启成功` / `关闭成功`（绿色）
+   - `开启失败` / `关闭失败`（红色，并说明原因）
+
+> 每次操作都会做**四项独立复核**才敢报成功：补丁状态、二进制签名、应用签名密封、原版备份。
+
+**首次打开被 macOS 拦住**（提示"无法验证开发者"）：**右键 → 打开** 一次即可；或者
+
+```bash
+xattr -dr com.apple.quarantine "/Applications/反重力补丁.app"
 ```
 
-## ⚠️ Ошибка HTTP 400 Bad Request
-Если вы получаете ошибку `HTTP 400 Bad Request` с сообщением `User location is not supported for the API use`, это означает, что Google определил ваше местоположение как неподдерживаемое.
+---
 
-**Важно:** использование VPN, прокси или других способов обхода ограничений может детектироваться Google и приводить к этой ошибке. Google активно борется с методами обхода, и если ваш IP-адрес или другие параметры сессии вызывают подозрение, доступ может быть заблокирован.
+## 🎯 支持的目标
 
-**Решение:**
-1. Примените патч (**PATCH → `1`: Antigravity IDE patch**). Патчер настроит корректный обход `isGoogleInternal` на уровне кода.
-2. Если патч уже применен, попробуйте сменить аккаунт Google или использовать другой VPN.
-3. Попробуйте использовать **[Xbox DNS](https://xbox-dns.ru/)**, **[dns.malw.link](https://info.dns.malw.link/)**, **[GeoHide](https://dns.geohide.ru:8443/)** (специальные DNS-серверы для обхода ограничений на ПК или роутере).
+| 目标 | 被修改的文件 | 作用 |
+|---|---|---|
+| **Antigravity IDE** | `…/Antigravity IDE.app/Contents/Resources/app/out/main.js` | 绕过 `isGoogleInternal` 地区判定 |
+| **Antigravity 2.0 桌面版** | `…/Antigravity.app/Contents/Resources/bin/language_server` | 强制 `hasValidAuth = true` |
+| **Antigravity CLI** | `agy` / `agy.exe` | 去掉「Eligibility Check」屏与 `Account ineligible` |
+| **VS Code 扩展** | `google.google-antigravity-*/extension.js` + `~/.gemini/bin/antigravity` | 阻止重新下载覆盖 + 关闭 release 频道变更检查 |
 
-**Пример ошибки:**
-```json
-{
-  "error": {
-    "code": 400,
-    "message": "User location is not supported for the API use.",
-    "status": "FAILED_PRECONDITION"
-  }
-}
+---
+
+## 🚀 完整版菜单
+
+启动 `Open AG Patcher.app`（或命令 `./OpenAGPatcher`）后：
+
+### PATCH（打补丁）
+
+| 选项 | 说明 |
+|---|---|
+| `1` Antigravity IDE patch | 改 `main.js`，解除地区限制 |
+| `2` Antigravity 2.0 patch | 改 `language_server`（桌面版后端） |
+| `3` Antigravity CLI (agy) patch | 改 `agy` 二进制，去掉资格检查 |
+| `4` Antigravity VS Code Patch | 改扩展 `extension.js` + 下载的二进制 |
+
+### RESTORE（还原）
+
+| 选项 | 说明 |
+|---|---|
+| `5` Antigravity IDE | 从 `main.js.bak` 还原 |
+| `6` Antigravity 2.0 | 从 `language_server.agybak` 还原 |
+| `7` Antigravity CLI | 从 `agy.agybak` 还原 |
+| `8` Antigravity VS Code 扩展 | 从 `extension.js.vscodebak` 还原 |
+
+### TOOLS（工具）
+
+| 选项 | 说明 |
+|---|---|
+| `9` 检查更新 | 查 GitHub 最新版本 |
+| `10` 打开 GitHub 仓库 | 浏览器打开项目页 |
+| `11` 手动选择路径 | 自动搜索失败时手工指定 |
+| `12` 关于 | 版本与作者信息 |
+| `0` 退出 | — |
+
+### 命令行用法
+
+```bash
+# macOS
+./OpenAGPatcher                                            # 自动搜索
+./OpenAGPatcher "/Applications/Antigravity IDE.app"        # 指定 IDE
+./OpenAGPatcher "/Applications/Antigravity.app"            # 指定桌面版
+./OpenAGPatcher "/usr/local/bin/agy"                       # 指定 CLI
+
+# 构建后从源码运行
+python3 main.py
 ```
 
-## ⚠️ Ошибка HTTP 429 Too Many Requests / RESOURCE_EXHAUSTED
+> 如果补丁脚本所在目录里恰好有别的 `main.js`，自动搜索可能挑错文件 —— 用 `11` 或命令行参数显式指定路径。
 
-При отправке промпта в Antigravity появляется ошибка исчерпания квоты:
+---
 
+## ⚠️ 常见错误与处理
+
+### HTTP 500 Internal Server Error
+说明 Google 服务端拒绝，与本地补丁无关。换账号（最好用官方支持地区的账号或有订阅的账号）。付费工具也解决不了。
+
+### HTTP 403 / `SUBSCRIPTION_REQUIRED` (#3501) / `Agent execution terminated due to error`
+不是补丁的问题，也不是「资格检查」页。这是 Google API 对该账号的**许可判定**，补丁只改本地文件，无法给账号发许可证。
+
+处理：① 换到官方支持地区的账号；② 或购买 Google AI Plus / Pro / Ultra 订阅。
+
+### HTTP 400 `User location is not supported for the API use`
+Google 判定你的位置不受支持。
+
+1. 先打补丁（`PATCH → 1`），它会在代码层绕过 `isGoogleInternal`
+2. 已打补丁还报错 → 换账号或换 VPN
+3. 也可以试专门的反限制 DNS（如 Xbox DNS、dns.malw.link、GeoHide）
+
+> 使用 VPN / 代理本身可能被 Google 识别并触发此错误。
+
+### HTTP 429 Too Many Requests / `RESOURCE_EXHAUSTED`
+配额用尽。解决办法是**重置 Antigravity 数据目录**（得到干净配置 + 新 token），可选从备份恢复对话。
+
+> 数据目录名：Antigravity 2.0 是 `Antigravity`，IDE 是 `Antigravity IDE`。
+
+**macOS**
+
+```bash
+# 1. 完全退出
+Cmd+Q（确认 Dock 里没有小圆点）
+
+# 2. 把数据目录移到安全位置
+mv ~/Library/Application\ Support/Antigravity ~/Desktop/Antigravity-backup
+
+# 3. 重新打开、登录、发一条测试消息（429 应消失），然后再退出
+
+# 4.（可选）只恢复对话
+rm -rf ~/Library/Application\ Support/Antigravity/User/globalStorage
+rm -rf ~/Library/Application\ Support/Antigravity/User/workspaceStorage
+cp -a ~/Desktop/Antigravity-backup/User/globalStorage ~/Library/Application\ Support/Antigravity/User/
+cp -a ~/Desktop/Antigravity-backup/User/workspaceStorage ~/Library/Application\ Support/Antigravity/User/
+
+# 5. 一切正常后删除备份
+rm -rf ~/Desktop/Antigravity-backup
 ```
-Error: HTTP 429 Too Many Requests
-{
-  "error": {
-    "code": 429,
-    "message": "Resource has been exhausted (e.g. check quota).",
-    "status": "RESOURCE_EXHAUSTED"
-  }
-}
-```
 
-Полный вид с Sherlog:
-```
-Error: HTTP 429 Too Many Requests
-Sherlog:
-TraceID: 0xe83b93ad455d1950
-Headers: {"Alt-Svc":["h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000"],"Content-Length":["139"],"Content-Type":["text/event-stream"],"Date":["Sun, 06 Sep 2026 10:44:19 GMT"],"Server":["ESF"],"Server-Timing":["gfet4t7; dur=502"],"Vary":["Origin","X-Origin","Referer"],"X-Cloudaicompanion-Trace-Id":["e83b93ad455d1950"],"X-Content-Type-Options":["nosniff"],"X-Frame-Options":["SAMEORIGIN"],"X-Xss-Protection":["0"]}
-```
+⚠️ **不要**从备份里把 `settings.json` 拷回去，否则会把旧的问题配置带回来。
 
-**Решение:** сброс папки данных Antigravity (чистая конфигурация + свежие токены), затем опциональное восстановление диалогов из бэкапа. Ниже — полные гайды для Windows, macOS и Linux.
+**Windows**
 
-> **Antigravity vs Antigravity IDE:** папка данных называется `Antigravity` для Antigravity 2.0 и `Antigravity IDE` для Antigravity IDE. В командах ниже подставляйте своё название. Дальше для краткости используется `Antigravity`.
-
-### Windows (полный гайд)
-
-**1.** Полностью закройте Antigravity (трей → `Quit` / `Выход`, проверьте в Диспетчере задач, что нет процессов `Antigravity`).
-
-**2.** Откройте `%appdata%` (`Win+R` → введите `%appdata%` → `Enter`). Видите папку `Antigravity` — переместите её в безопасное место, например на Рабочий стол:
 ```powershell
 Move-Item "$env:APPDATA\Antigravity" "$env:USERPROFILE\Desktop\Antigravity-backup"
-```
-
-**3.** Запустите Antigravity, авторизуйтесь, отправьте тестовый промпт для проверки связи. Ошибка 429 должна уйти.
-
-**4.** Если всё ОК — закройте Antigravity.
-
-**5.** *(Опционально, восстановление диалогов)* Нам нужны только чаты:
-- `User\globalStorage` (ваши чаты)
-- `User\workspaceStorage`
-
-Antigravity уже создал новую чистую папку `%appdata%\Antigravity` при запуске из п. 3. Удалите в ней только эти две папки и скопируйте их из бэкапа:
-```powershell
+# 重新打开、登录、测试后退出
 Remove-Item -Recurse -Force "$env:APPDATA\Antigravity\User\globalStorage"
 Remove-Item -Recurse -Force "$env:APPDATA\Antigravity\User\workspaceStorage"
-
 Copy-Item -Recurse "$env:USERPROFILE\Desktop\Antigravity-backup\User\globalStorage" "$env:APPDATA\Antigravity\User\"
 Copy-Item -Recurse "$env:USERPROFILE\Desktop\Antigravity-backup\User\workspaceStorage" "$env:APPDATA\Antigravity\User\"
 ```
 
-> ⚠️ **Не копируйте** файл `settings.json` из бэкапа — иначе вернёте старую проблемную конфигурацию.
+**Linux**
 
-**6.** Запустите Antigravity, проверьте диалоги и отправьте промпт. Если всё работает — удалите бэкап:
-```powershell
-Remove-Item -Recurse -Force "$env:USERPROFILE\Desktop\Antigravity-backup"
-```
-
-### macOS (полный гайд)
-
-**1.** Полностью закройте Antigravity (`Cmd+Q`, проверьте, что точки под иконкой в Dock нет).
-
-**2.** Переместите папку данных в безопасное место:
-```bash
-mv ~/Library/Application\ Support/Antigravity ~/Desktop/Antigravity-backup
-```
-
-**3.** Запустите Antigravity, авторизуйтесь, отправьте тестовый промпт — ошибка 429 должна уйти.
-
-**4.** Если всё ОК — закройте Antigravity (`Cmd+Q`).
-
-**5.** *(Опционально, восстановление диалогов)* Antigravity уже создал новую чистую папку `~/Library/Application Support/Antigravity` при запуске из п. 3. Удалите в ней только хранилища чатов и скопируйте их из бэкапа:
-```bash
-rm -rf ~/Library/Application\ Support/Antigravity/User/globalStorage
-rm -rf ~/Library/Application\ Support/Antigravity/User/workspaceStorage
-
-cp -a ~/Desktop/Antigravity-backup/User/globalStorage ~/Library/Application\ Support/Antigravity/User/
-cp -a ~/Desktop/Antigravity-backup/User/workspaceStorage ~/Library/Application\ Support/Antigravity/User/
-```
-
-> ⚠️ **Не копируйте** файл `settings.json` из бэкапа — иначе вернёте старую проблемную конфигурацию.
-
-**6.** Запустите Antigravity, проверьте диалоги и отправьте промпт. Если всё работает — удалите бэкап:
-```bash
-rm -rf ~/Desktop/Antigravity-backup
-```
-
-### Linux (полный гайд)
-
-Папка данных на Linux: `${XDG_CONFIG_HOME:-~/.config}/Antigravity` (обычно `~/.config/Antigravity`).
-
-**1.** Полностью закройте Antigravity:
 ```bash
 pkill -f -i antigravity; sleep 2; pgrep -a -i antigravity || echo "closed"
-```
-
-**2.** Переместите папку данных в безопасное место:
-```bash
-# стандартный путь
 mv ~/.config/Antigravity ~/Antigravity-backup
-
-# если задан XDG_CONFIG_HOME:
-# mv "${XDG_CONFIG_HOME:-$HOME/.config}/Antigravity" ~/Antigravity-backup
-ls -d ~/Antigravity-backup
-```
-
-**3.** Запустите Antigravity, авторизуйтесь, отправьте тестовый промпт — ошибка 429 должна уйти.
-
-**4.** Если всё ОК — закройте Antigravity (п. 1).
-
-**5.** *(Опционально, восстановление диалогов)* Antigravity уже создал новую чистую папку `~/.config/Antigravity` при запуске из п. 3. Удалите в ней только хранилища чатов и скопируйте их из бэкапа:
-```bash
+# 重新打开、登录、测试后退出
 rm -rf ~/.config/Antigravity/User/globalStorage
 rm -rf ~/.config/Antigravity/User/workspaceStorage
-
 cp -a ~/Antigravity-backup/User/globalStorage ~/.config/Antigravity/User/
 cp -a ~/Antigravity-backup/User/workspaceStorage ~/.config/Antigravity/User/
 ```
 
-> ⚠️ **Не копируйте** файл `settings.json` из бэкапа — иначе вернёте старую проблемную конфигурацию.
-
-**6.** Запустите Antigravity, проверьте диалоги и отправьте промпт. Если всё работает — удалите бэкап:
-```bash
-rm -rf ~/Antigravity-backup
-```
-
-### Почему это работает
-
-При перемещении папки данных Antigravity создаёт новую конфигурацию с нуля — свежие токены, чистая квота. Старая привязка к исчерпанной квоте сбрасывается.
-
-### Примечание для пользователей с применённым патчем
-
-Патч модифицирует `main.js` внутри установленного приложения (на macOS — внутри `.app`-бандла) — он **не затрагивается** при перемещении папки данных, поэтому повторный патч не требуется.
-
-Единственное, что сбрасывается — runtime workaround в `settings.json`. Если после сброса данных появятся проблемы — запустите патчер ещё раз (пункт 1 в меню). Патчер обнаружит, что `main.js` уже пропатчен, и применит только settings workaround.
-
-## ⚠️ Ошибка лицензии Antigravity CLI (#3501)
-Если в Antigravity CLI (`agy`) появляется ошибка `You do not have a valid license of this product`, это не проблема локального патча и не экран `Eligibility Check`.
-
-Эта ошибка связана с API Google и состоянием аккаунта пользователя: лицензией, доступом или проверкой прав на стороне Google. Патчер меняет только локальные файлы Antigravity/Antigravity CLI и не может выдать аккаунту лицензию или изменить ответ Google API, поэтому с этой ошибкой он не поможет.
-
-**Пример ошибки:**
-```text
-⚠ You do not have a valid license of this product. Please contact your administrator to request a license. If you are
-not an enterprise user and believe you are receiving this message as an error, please try using the latest version and
-logging in again. (#3501)
-Error ID: b2c1d9edcaac4fd5ac5766de06c2253b
-Trajectory ID: d3ee4302-4213-40f9-9ac5-42e83e38a5ce
-```
-
-## ⚠️ Ошибка патча: "✗ isGoogleInternal -> true (auth) — pattern not found"
-
-Если при применении патча (PATCH → `1`: Antigravity IDE patch) вы получаете сообщение:
-
-```text
-✗ isGoogleInternal -> true (auth) — pattern not found
-```
-
-это означает, что патчер не нашёл ожидаемый паттерн `isGoogleInternal` в файле `main.js`, который он пытается пропатчить.
-
-**В почти 100% случаев это происходит потому, что патчер нашёл и пытается пропатчить случайный `main.js` файл, не относящийся к Antigravity IDE.**
-
-### Решение:
-
-1. Проверьте в главном меню патчера, какой именно путь к файлу `main.js` был определён (обычно выводится перед началом патчинга).
-2. Убедитесь, что путь ведёт к реальному файлу Antigravity IDE, например:
-   - Windows: `%LOCALAPPDATA%\Programs\Antigravity IDE\resources\app\out\main.js`
-   - Linux: `/usr/share/antigravity-ide/resources/app/out/main.js`
-   - macOS: `/Applications/Antigravity IDE.app/Contents/Resources/app/out/main.js`
-3. Если путь указывает на другой файл (например, `main.js` из другого Electron-приложения или из текущей директории скрипта), выберите **TOOLS → `11` (Select custom path)** и укажите корректный путь к папке Antigravity IDE вручную.
-4. Убедитесь, что в рабочей директории патчера нет постороннего файла `main.js` — если он там есть, патчер может подхватить его вместо нужного (поиск начинается с текущей директории).
-
-> **Примечание:** Если вы запускаете патчер из папки, где лежит какой-либо другой `main.js` (например, от другого проекта), переместите скрипт в другую директорию или явно укажите путь к Antigravity IDE через аргумент командной строки:
->
-> ```bash
-> python main.py "C:\Users\<username>\AppData\Local\Programs\Antigravity IDE"
-> ```
-
-## 📚 Дополнительная информация по ошибкам
-Для более глубокого понимания типов HTTP-ошибок и способов их диагностики рекомендуем ознакомиться с данным руководством:
-- [5xx Server Errors: The Complete Guide](https://komodor.com/learn/5xx-server-errors-the-complete-guide/) — подробный разбор серверных ошибок.
-
-## 🌟 Возможности
-- Автоматический поиск установленного Antigravity 2.0, Antigravity IDE, Antigravity CLI (`agy`) и расширения Google Antigravity для VS Code в стандартных путях и реестре Windows.
-- **Проверка обновлений** — автоматическая проверка новых версий при запуске и ручная проверка через меню (TOOLS → `9`).
-- **Патч Antigravity CLI** — снятие экрана «Eligibility Check» и обход проверки eligibility в Go-бинаре `agy`/`agy.exe` на уровне машинного кода по байтовой сигнатуре для архитектур x86-64 и ARM64 (с резервной копией и откатом).
-- **Патч Antigravity Manager (`language_server`)** — снятие проверки авторизации (`hasValidAuth=true`) в скомпилированном бинарнике бэкенда по байтовой сигнатуре для архитектур x86-64 и ARM64 (с резервной копией и откатом).
-- **Патч расширения Google Antigravity для VS Code** — инъекция guard'а от повторного скачивания бинаря в `extension.js` расширения `google.google-antigravity` + отключение проверки смены release-канала (`isChannelChanged -> false`), чтобы уже скачанный/пропатченный бинарь не перезаписывался. Дополнительно патчит скачанный бинарь `~/.gemini/bin/antigravity` agy-патчем.
-- Поддержка Linux: поиск по `/usr/share/antigravity-ide`, определение версии через `dpkg`, `rpm` и `package.json`.
-- Поддержка macOS: поиск `.app`-бандла в `/Applications` и `~/Applications`, ad-hoc переподпись после изменения `main.js`.
-- Создание резервной копии перед изменениями.
-- **Атомарная замена бинарей на POSIX** — `agy` и `language_server` на Linux/macOS записываются через временный файл (`tempfile.mkstemp` в той же директории, O_EXCL) и `os.replace`: запущенный процесс не блокирует патч (нет `ETXTBSY` / «Permission denied» из-за занятого бинаря), файл сохраняет права (`+x` не слетает), owner/group оригинала; временный файл удаляется при любой ошибке, а симлинки патчиться отказывается. Общая логика — `source/patcher/utils/atomic.py`.
-- Применение и откат патча через простое меню.
-- Поддержка путей `resources/app/out/main.js` и `resources/app/main.js`.
-- Цветной вывод и попытка автоматического повышения прав (UAC на Windows, предложение `sudo` на Linux).
-- Проверка минимальной версии Antigravity IDE (>= `2.1.1`) перед применением патча.
-- Определение версии Antigravity IDE через реестр Windows, пакетный менеджер на Linux или `package.json` на macOS.
-- Обнаружение уже применённого патча с предложением применить повторно.
-
-## 🚀 Как использовать
-1. Закройте Antigravity IDE или Antigravity 2.0.
-2. Запустите патчер от имени администратора (скрипт сам запросит повышение прав при необходимости).
-3. В меню выберите нужное действие:
-
-| Пункт меню | Описание |
-|---|---|
-| **PATCH** | |
-| `1` Antigravity IDE patch | Применить патч к `main.js` для Antigravity IDE (bypass region lock) |
-| `2` Antigravity 2.0 patch | Применить патч к бинарному файлу `language_server` (Antigravity Manager) |
-| `3` Antigravity CLI (agy) patch | Применить патч к бинарю `agy`/`agy.exe` (unlock agy tool) |
-| `4` Antigravity VS Code Patch | Патч `extension.js` расширения `google.google-antigravity` + бинаря `~/.gemini/bin/antigravity` (требует установленный и запатченный Antigravity 2.0) |
-| **RESTORE** | |
-| `5` Antigravity IDE | Восстановить оригинальный `main.js` для Antigravity IDE из бэкапа |
-| `6` Antigravity 2.0 | Восстановить оригинальный `language_server` из бэкапа |
-| `7` Antigravity CLI | Восстановить оригинальный `agy`/`agy.exe` из бэкапа |
-| `8` Antigravity VS Code extension | Восстановить оригинальный `extension.js` (и бинарь `~/.gemini/bin`) из бэкапа |
-| **TOOLS** | |
-| `9` Check for updates | Проверить наличие новых версий на GitHub |
-| `10` Open GitHub repository | Открыть страницу проекта в браузере |
-| `11` Select custom path | Выбрать путь к папке приложения или файлу вручную (IDE / 2.0 / CLI / VS Code extension) |
-| `12` About program | Показать информацию о программе и авторе |
-| **`0` Exit** | Выйти из патчера |
-
-Запуск из исходников:
-```bash
-python main.py
-```
-
-Запуск с указанием пути (для Antigravity IDE, Antigravity 2.0 или Antigravity CLI):
-```bash
-# Windows
-python main.py "C:\\Users\\<username>\\AppData\\Local\\Programs\\Antigravity IDE"
-python main.py "C:\\Users\\<username>\\AppData\\Local\\Programs\\Antigravity\\resources\\bin\\language_server.exe"
-python main.py "C:\\Users\\<username>\\AppData\\Local\\agy\\bin\\agy.exe"
-
-# Linux
-python main.py /usr/share/antigravity-ide
-python main.py /opt/Antigravity/resources/bin/language_server
-python main.py /usr/local/bin/agy
-
-# macOS
-python3 main.py /Applications/Antigravity\ IDE.app
-python3 main.py /Applications/Antigravity.app
-python3 main.py /usr/local/bin/agy
-```
-
-Если `main.js` или `language_server` находится рядом со скриптом, путь указывать не нужно — они будут найдены автоматически.
-
-> **macOS:** если `Antigravity IDE.app` лежит в `/Applications`, запись потребует `sudo` (скрипт сам предложит перезапуск). Для установки в `~/Applications` или пользовательскую директорию `sudo` не нужен. После успешного патча `.app` автоматически переподписывается ad-hoc подписью (`/usr/bin/codesign --force --deep --sign -`) — без этого Electron с Hardened Runtime не запустится на macOS. Сканирование подписанных Mach-O выполняется чтением в память (без `mmap`), чтобы ядро не завершало процесс CODESIGNING SIGKILL при проверке уже пропатченного бинаря. Снятие `com.apple.quarantine` выполняется встроенной утилитой `/usr/bin/xattr` — дополнительные Python-пакеты не нужны.
-
-### 🍎 Использование на macOS
-
-> **Apple Silicon (arm64): готовое .app + одна команда сборки.**
-> Скачать готовое: [**Releases → macOS Apple Silicon (arm64)**](https://github.com/FTZ-OPUS/antigravity-macos-patcher/releases/latest)
-> (`Open-AG-Patcher-macOS-arm64.zip` → распаковать → двойной клик по `Open AG Patcher.app`).
-> В этом форке добавлена нативная сборка под Apple Silicon: `source/build_macos.sh` собирает
-> Mach-O arm64 one-file бинарь и упаковывает его в `dist/Open AG Patcher.app`
-> (двойной клик → меню в Terminal). Подробности по-китайски: [`MACOS_APPLE_SILICON_zh.md`](./MACOS_APPLE_SILICON_zh.md).
-> ```bash
-> cd source && ./build_macos.sh      # PYTHON=/path/to/arm64/python3 ./build_macos.sh
-> ```
-
-Поскольку готовые бинарные сборки для macOS отсутствуют в официальных релизах (доступны только для Windows и Linux), вы можете либо запускать патчер напрямую из исходного кода, либо собрать исполняемый файл самостоятельно.
-
-#### Вариант 1: Запуск из исходного кода (рекомендуется)
-1. Создайте виртуальное окружение, активируйте его и установите необходимые зависимости:
-   ```bash
-   python3 -m venv .venv
-   source .venv/bin/activate
-   pip install -r requirements.txt
-   ```
-2. Полностью закройте Antigravity 2.0 или Antigravity IDE.
-3. Запустите патчер, указав путь к приложению:
-   ```bash
-   # Для Antigravity IDE
-   python3 main.py "/Applications/Antigravity IDE.app"
-   
-   # Для Antigravity 2.0
-   python3 main.py "/Applications/Antigravity.app"
-   ```
-   *Примечание: Если приложение находится в папке `/Applications`, скрипт автоматически запросит повышение прав (`sudo`) для записи.*
-
-#### Вариант 2: Самостоятельная сборка бинарного файла
-Если вам необходим готовый исполняемый файл, вы можете собрать его самостоятельно, следуя инструкции в разделе [🛠️ Сборка](#%EF%B8%8F-сборка).
-
-После успешной сборки запуск скомпилированного файла выполняется через Терминал:
-```bash
-cd dist
-chmod +x Open_AG_Patcher_macOS
-sudo ./Open_AG_Patcher_macOS
-```
-Если macOS блокирует запуск скомпилированного файла, снимите quarantine-атрибут:
-```bash
-xattr -dr com.apple.quarantine Open_AG_Patcher_macOS
-```
-
-#### Что выбрать в меню
-Используйте:
-- **PATCH → `1`** (Antigravity IDE patch) для `Antigravity IDE.app`
-- **PATCH → `2`** (Antigravity 2.0 patch) для `Antigravity.app` (бэкенд language_server)
-- **PATCH → `3`** (Antigravity CLI (agy) patch) для бинаря `agy` (если установлен)
-- **PATCH → `4`** (Antigravity VS Code Patch) для расширения `google.google-antigravity` в VS Code
-- **RESTORE → `5`**, `6`, `7` или `8` для восстановления из бэкапа
-
-Для `Antigravity.app` патчер обычно сам находит:
-```text
-/Applications/Antigravity.app
-```
-Если автопоиск не нашел приложение, выберите **TOOLS → `11`** (Select custom path) и укажите один из путей:
-```text
-/Applications/Antigravity.app
-/Applications/Antigravity IDE.app
-```
-
-#### Проверить подпись
-После патча `.app` автоматически переподписывается ad-hoc подписью. Проверить это можно следующей командой:
-```bash
-codesign -dv /Applications/Antigravity.app 2>&1 | grep Signature
-```
-Ожидаемый результат:
-```text
-Signature=adhoc
-```
-
-## ❓ Что именно меняется
-
-### Патч для Antigravity IDE
-
-Патчер вносит изменения в `main.js` для обхода проверки `isGoogleInternal`. Изменения обратимы через резервную копию (`main.js.bak`).
-
-### `resetIsTierGCPTos(),this.XXX.isGoogleInternal` → `resetIsTierGCPTos(),true`
-Заменяет проверку флага `isGoogleInternal` после вызова `resetIsTierGCPTos()` в сервисе авторизации на безусловное `true`, активируя внутренний путь доступа Google. После применения патча автоматически очищаются папки кэша VS Code (`CachedData` и `Code Cache/js`), принуждая IDE перекомпилировать пропатченный JS-код.
-
-
-### Патч для Antigravity Manager (language_server)
-
-Antigravity Manager (`language_server` или `language_server.exe`) — бэкенд-служба, запускаемая внутри Antigravity 2.0. По умолчанию она требует валидную проверку авторизации и лицензии на стороне Google.
-
-Патчер вносит изменения непосредственно в скомпилированный бинарный файл `language_server` по байтовой сигнатуре для двух архитектур через класс `MultiGate`:
-- **x86-64** (Intel Mac / Windows / Linux x64): Находит и заменяет проверку `cmp byte ptr [rax + 8], 0` на `mov byte ptr [rax + 8], 1` с последующими `nop` (`\xc6\x40\x08\x01\x90\x90`).
-- **ARM64** (Linux arm64 / Apple Silicon macOS): Находит и заменяет последовательность `ldrb w3, [x0, #8] ; tbz w3, #0, skip` (с учётом одной или двух инструкций подготовки) на `mov w3, #1 ; strb w3, [x0, #8]` (`\x23\x00\x80\x52\x03\x20\x00\x39`).
-
-В результате возвращаемое значение `hasValidAuth` всегда принудительно выставляется в `true`, снимая блокировку.
-Патч обратим через **RESTORE → `6`** восстановлением оригинального бинарника из `.agybak`.
-Запись на POSIX выполняется так же атомарно, как и для `agy` (временный файл + `os.replace`, сохранение `+x` и владельца), а работающий `language_server` не блокирует патч.
-
-### Патч для Antigravity CLI (agy)
-
-Antigravity CLI — отдельный Go-бинарь (`agy.exe` на Windows, `agy` на Linux/macOS), который показывает косметический экран «Eligibility Check» и формирует ошибку «Account ineligible» по ответу сервера. Поскольку это скомпилированный бинарь (не JS), патчинг выполняется **на уровне машинного кода** по уникальной байтовой сигнатуре под две архитектуры через `MultiGate`: **x86-64** (Windows / Linux x64 / Intel Mac) и **ARM64** (Windows ARM64 / Linux arm64 / Apple Silicon macOS).
-
-Патчер применяет **один гейт** — внешняя проверка перед построением ошибки делает ветку ошибки недостижимой:
-
-#### Gate 1 — экран «Eligibility Check»
-
-##### x86-64
-1. Патчер сканирует бинарник в поисках уникальной сигнатуры проверки гейта:
-   ```asm
-   test rax, rax              ; 48 85 c0            <-- auth-результат == nil?
-   je  eligible               ; 0f 84 xx xx xx xx   <-- если nil → GOOD
-   cmp byte ptr [rax+8], 0   ; 80 78 08 00         <-- проверка флага eligibility
-   jne eligible               ; 0f 85 xx xx xx xx   <-- если флаг != 0 → GOOD
-   call failure_builder       ; e8 xx xx xx xx      <-- BAD: построение ошибки
-   ```
-2. Патчер заменяет `cmp byte ptr [rax+8], 0` на `test rax,rax` + `NOP` (`48 85 c0 90`). Так как `rax` здесь гарантированно не равен нулю, переход `jne` всегда уводит выполнение в ветку «eligible».
-
-##### ARM64
-1. В актуальных нативных arm64-сборках внешняя проверка перед построением ошибки выглядит как:
-   ```asm
-   cbnz x1, error            ; xx xx xx b5     <-- если x1 != 0 → BAD
-   cbz  x0, eligible         ; xx xx xx b4     <-- если x0 == 0 → GOOD
-   ldrb w1, [x0, #8]        ; 01 20 40 39     <-- загрузка флага eligibility
-   tbnz w1, #0, eligible    ; xx xx xx 37     <-- если бит 0 != 0 → GOOD
-   bl   failure_builder      ; xx xx xx 97     <-- BAD: построение ошибки
-   ```
-2. Патчер заменяет загрузку флага `ldrb w1,[x0,#8]` на `mov w1,#1` (`21 00 80 52`), поэтому существующий `tbnz` всегда выбирает ветку «eligible». `MultiGate` автоматически выбирает x64- или arm64-сигнатуру. Единый строгий ARM64-гейт покрывает оба известных хвоста: классический (`x0`/`x1`/`x2` → `[sp,#0x90]`/`[sp,#0x60]`/`[sp,#0x80]`) и из сборки macOS (`x0`/`x1`/`x2`/`x3` → `[sp,#0x98]`/`[sp,#0x60]`/`[sp,#0x88]`/`[sp,#0x58]`). Начиная с CLI 1.2.7 проверка перекомпилирована без внешнего `cbnz` (`cbz x0` → `ldrb w4,[x0,#8]` → `tbnz w4,#0` → `ldp x4,x5,[x0,#0x48]`) — её покрывает отдельный гейт `eligibility screen off (arm64, w4)` с фиксом `mov w4,#1` (`24 00 80 52`). Плюс в функции экрана есть инлайн-проверка (`cbnz x1` → `cbz x0` → `ldrb w2,[x0,#8]` → `tbnz w2,#0` → `bl`) — её покрывает гейт `eligibility screen off (arm64, w2)` с фиксом `mov w2,#1` (`22 00 80 52`); без него экран `Eligibility check failed:` выживает даже с пропатченным w4. `MultiGate` собирает совпадения **всех** суб-гейтов (`resolve_all`) — в 1.2.7 патчатся оба сайта. Совместимость со свежими билдами автоматически проверяется тестом `test-agy/test_cli_releases.py`, который скачивает все архивы последнего релиза.
-
-#### Общие шаги
-3. Перед записью создаётся резервная копия `agy.exe.agybak` (или `agy.agybak` на POSIX). Если существующий бэкап устарел (приложение автообновилось), он автоматически обновляется — stale-копии не хранятся.
-4. На Linux/macOS запись выполняется атомарно: новые байты пишутся во временный файл (`tempfile.mkstemp`, O_EXCL) в той же директории, после `fsync` он переименовывается поверх целевого через `os.replace` с сохранением прав, владельца и группы оригинала. Запущенный `agy` не мешает патчу — ядро продолжает исполнять старый inode, а последующие запуски получают новый бинарь. На Windows запись идёт напрямую в файл.
-5. На macOS после модификации бинарь переподписывается ad-hoc (как и в случае с `.app`).
-
-**Безопасность патча:**
-- Если байтовая сигнатура не найдена в бинаре (неизвестная/неподдерживаемая версия), патчер **отказывается патчить** и ничего не меняет — выводится «signature not found (unsupported version?)».
-- Перед записью каждый патч валидируется: смещение не отрицательное, патч не выходит за границы файла и не меняет его размер.
-- Патчинг симлинков запрещён: цель обязана быть обычным файлом, иначе патчер отказывается выполнять запись.
-- Если сигнатура встречается несколько раз (Go может компилировать одну функцию в нескольких экземплярах), патчер применяет фикс ко **всем** вхождениям — они идентичны на уровне машинного кода.
-- Откат выполняется через **RESTORE → `7`** (Antigravity CLI) восстановлением из `.agybak`.
-
-> **Примечание по платформам:** сигнатуры для x86-64 проверены под Windows и Intel macOS, для ARM64 — под Apple Silicon macOS. Discovery ищет бинарь кроссплатформенно (`PATH`, scoop на Windows, `/usr/local/bin`, `/opt/antigravity/bin`, `~/.local/bin` на POSIX). На Linux бинарь `agy` может быть скомпилирован иначе, и сигнатура может не совпасть — в этом случае патч честно сообщит об этом без модификации файла.
-
-### Патч для расширения Google Antigravity (VS Code)
-
-> **⚠️ Важно:** для корректного патча VS Code расширения (`PATCH → 4`) нужен установленный и уже запатченный Antigravity 2.0 (`PATCH → 2` — патч `language_server`). Сначала установите Antigravity 2.0, примените к нему патч, и только потом патчите расширение `google.google-antigravity` в VS Code.
-
-Расширение `google.google-antigravity` для VS Code при каждом запуске проверяет версию бэкенд-бинаря и перекачивает его с release-сервера Google. Патчер вносит два изменения в `extension.js` расширения:
-
-#### Part 1 — guard от повторного скачивания
-
-После строки `outputChannel.appendLine('[INSTALL] Checking Antigravity releases...')` инъектируется блок, который проверяет наличие уже скачанного бинаря (по `targetPathOverride` или в `~/.gemini/bin`) и, если он найден, **немедленно возвращает путь к нему**, пропуская проверку версии и повторное скачивание:
-
-```js
-{const __primary=options.targetPathOverride||getInstalledTargetPath();
-const __candidates=[__primary,
-(0,path_1.join)((0,path_1.dirname)(__primary),'antigravity'+((0,path_1.extname)(__primary)||''))];
-for(const __p of __candidates){if(__p&&await pathExists(__p)){
-outputChannel.appendLine('[INSTALL] Existing binary found at '+__p+'. Skipping version check and re-download.');return __p;}}}
-```
-
-Поиск точки вставки выполняется гибким regex'ом, который матчит **полный вызов** `outputChannel.appendLine('...');` — с учётом разных кавычек и пробелов, но строго до закрывающей скобки вызова, чтобы инъекция попала после него, а не внутрь.
-
-#### Part 2 — отключение проверки смены release-канала
-
-```js
-// было:
-const isChannelChanged = manifestFetched && lastInstalledUrl !== releaseBaseUrl;
-// стало:
-const isChannelChanged = false;
-```
-
-Без этого расширение считает release-канал изменённым и принудительно перекачивает бинарь, затирая пропатченный.
-
-#### Дополнительно — патч скачанного бинаря
-
-Сразу после патча `extension.js` патчер предлагает применить agy-патч (см. выше) к скачанному расширением бинарю `~/.gemini/bin/antigravity` (или `~/.gemini/bin/agy`) — он содержит ту же проверку eligibility.
-
-**Детали:**
-- Резервная копия: `extension.js.vscodebak` рядом с оригиналом; stale-бэкапы автоматически обновляются.
-- Обнаружение уже применённого патча по наличию инъекции и `const isChannelChanged = false;`.
-- Откат: **RESTORE → `8`** восстанавливает `extension.js` из `.vscodebak`, а также предлагает восстановить бинарь `~/.gemini/bin` из `.agybak`.
-- После патча требуется перезагрузка окна VS Code (**Developer: Reload Window**).
-- Поиск расширения: `~/.vscode/extensions`, `~/.vscode-insiders/extensions`, `~/.vscode-oss/extensions`, `~/.vscode-server/extensions`, `~/.vscode-server-insiders/extensions` (или каталог из env `VSCODE_EXTENSIONS`). При нескольких версиях выбирается самая свежая по mtime.
-
-## 🔍 Логика поиска файла
-
-Патчер ищет `main.js` в следующем порядке:
-
-1. Аргумент командной строки (путь к директории или напрямую к `main.js`).
-2. Текущая директория (`./main.js`).
-3. Автоматический поиск по стандартным путям:
-   - **Windows:**
-     - `%LOCALAPPDATA%\Programs\Antigravity IDE`
-   - **Linux:**
-     - `/usr/share/antigravity-ide`
-     - `/opt/Antigravity IDE`
-     - `/opt/Antigravity IDE/resources/app/out`
-   - **macOS:**
-     - `/Applications/Antigravity IDE.app/Contents/Resources/app`
-     - `~/Applications/Antigravity IDE.app/Contents/Resources/app`
-4. Реестр Windows (ключ `{AA73B3E3-C6C8-45C8-B1DC-4AE56C751432}_is1` в `HKCU` и `HKLM`: `SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\`).
-
-Внутри найденной директории проверяются пути:
-- `resources/app/out/main.js`
-- `resources/app/main.js`
-- `out/main.js` (macOS)
-- `main.js` (если путь указан напрямую)
-
-На macOS скрипт также принимает путь к `.app`-бандлу напрямую — `Contents/Resources/app/out/main.js` ресолвится автоматически.
-
-### Поиск Antigravity CLI (`agy`)
-
-Бинарь `agy` (`agy.exe` на Windows) ищется location-agnostic — по `PATH` и стандартным каталогам, без хардкодных путей/версий:
-
-1. Аргумент командной строки или **TOOLS → `11` → `3`** (путь к файлу `agy`/`agy.exe` или к папке).
-2. `PATH` (`shutil.which("agy")`).
-3. Стандартные каталоги:
-   - **Windows:** `%LOCALAPPDATA%`, `%PROGRAMFILES%`, `%PROGRAMFILES(X86)%`, `%ProgramData%`, `%APPDATA%` (+ подпапки `Programs`), scoop (`%USERPROFILE%\scoop\apps`, `%SCOOP%\apps`). Шаблоны: `agy/bin/agy.exe`, `agy/*/bin/agy.exe` (scoop version-dirs), `agy*/agy.exe`.
-   - **Linux/macOS:** `/usr/local/bin`, `/usr/bin`, `/opt/antigravity/bin`, `/opt/antigravity`, `~/.local/bin`, `~/bin`.
-
-Если найдено несколько копий (например, scoop с несколькими версиями), выбирается самая свежая по mtime.
-
-### Поиск расширения Google Antigravity (VS Code)
-
-Файл `extension.js` расширения `google.google-antigravity` ищется в следующих каталогах (первым — переопределение через env `VSCODE_EXTENSIONS`):
-
-1. Аргумент командной строки или **TOOLS → `11` → `4`** (путь к `extension.js`, каталогу расширения `google.google-antigravity-*` или корню `extensions`).
-2. `~/.vscode/extensions`
-3. `~/.vscode-insiders/extensions`
-4. `~/.vscode-oss/extensions`
-5. `~/.vscode-server/extensions` (remote-сервер)
-6. `~/.vscode-server-insiders/extensions`
-
-Внутри каталога расширений ищутся папки по маске `google.google-antigravity-*`; при нескольких версиях выбирается самая свежая по mtime. Ожидаемый файл — `extension.js` в корне каталога расширения.
-
-### Поиск бинаря `~/.gemini/bin`
-
-Бинарь, скачиваемый расширением (используется только пунктом **PATCH → `4`**), ищется в `~/.gemini/bin`: `antigravity.exe`/`agy.exe` на Windows, `antigravity`/`agy` на POSIX. Если бинаря там нет, но расширение ещё ни разу не запускалось — патчер подскажет запустить расширение в VS Code один раз, чтобы оно скачало бинарь.
-
-## 🔎 Определение версии Antigravity IDE
-
-| Платформа | Метод определения версии |
-|---|---|
-| **Windows** | Реестр: `DisplayVersion` из ключа `{AA73B3E3-...}_is1` |
-| **Linux (deb)** | `dpkg-query -W antigravity-ide` |
-| **Linux (rpm)** | `rpm -q --queryformat %{VERSION} antigravity-ide` |
-| **Linux (portable/snap/flatpak)** | `package.json` рядом с `main.js` |
-| **macOS** | `package.json` в `Antigravity IDE.app/Contents/Resources/app/` |
-
-Если версия не определена, патчер предлагает продолжить без проверки. Если версия ниже `2.1.1` — предупреждает и также предлагает выбор.
-
-## 🔒 Проверка уже применённого патча
-
-Перед патчингом скрипт проверяет, не был ли файл уже пропатчен, по двум признакам:
-- отсутствие `if(this.X.isGoogleInternal)` (паттерн заменён на `if(true)`)
-- отсутствие немодифицированных `isGoogleInternal` (comma-based auth check).
-
-## 🛡️ Повышение прав
-
-- **Windows**: автоматический UAC-запрос через `ShellExecuteW` с параметром `runas`. Корректно обрабатывает пути с пробелами.
-- **Linux**: если скрипт запущен не от root, предлагает перезапуститься через `sudo` (`os.execvp`). При отказе продолжает с предупреждением о возможных ошибках записи. При этом runtime workaround пишет в `settings.json` исходного пользователя (`SUDO_USER`/`SUDO_UID`), а не в `/root/.config/...`.
-- **macOS**: использует ту же posix-ветку — `sudo` предлагается, если запущено без root. Для `~/Applications/Antigravity IDE.app` на `sudo` можно ответить «n» (директория уже доступна на запись), для `/Applications/Antigravity IDE.app` — согласиться. Пользовательский `settings.json` при запуске через `sudo` также берётся из home исходного пользователя, а не `root`.
-
-## 🍎 Особенности macOS
-
-### Переподпись `.app` после патча
-
-Любое изменение файла внутри подписанного `.app`-бандла нарушает code signature. Electron-приложения с включённым Hardened Runtime (Antigravity IDE — одно из них) после этого **не запускаются** на macOS — до того, как Gatekeeper вообще покажет пользователю диалог.
-
-Чтобы `.app` продолжал работать, скрипт после `do_patch` и `do_restore` автоматически выполняет:
-
-```bash
-codesign --force --deep --sign - /path/to/Antigravity\ IDE.app
-xattr -dr com.apple.quarantine /path/to/Antigravity\ IDE.app
-```
-
-`--sign -` — ad-hoc подпись (без Developer ID). Этого достаточно для локального запуска приложения. Notarization не требуется.
-
-Требуется установленный `codesign` — он идёт в составе **Xcode Command Line Tools**:
-```bash
-xcode-select --install
-```
-
-### Ошибка "Operation not permitted" при патчинге
-
-Если вы столкнулись с ошибкой `[!] Backup error: [Errno 1] Operation not permitted: '/Applications/Antigravity IDE.app/Contents/Resources/app/out/main.js.bak'`:
-
-1. Добавьте для терминала разрешение на полный доступ к диску: **Системные настройки → Конфиденциальность и безопасность → Полный доступ к диску** (System Settings → Privacy & Security → Full Disk Access).
-2. Снимите карантин с приложения командой:
-   ```bash
-   sudo xattr -rd com.apple.quarantine /path/to/Antigravity\ IDE.app
-   ```
-
-### Если приложение не запускается после патча
-
-1. Убедись, что `codesign` доступен: `which codesign`.
-2. Проверь, что `.app` был переподписан: `codesign -dv /Applications/Antigravity\ IDE.app 2>&1 | grep Authority` — должен быть `Signature=adhoc`.
-3. Если macOS всё равно блокирует: `Системные настройки → Конфиденциальность и безопасность` — внизу будет кнопка «Открыть всё равно».
-
-## ⚙️ Требования
-
-- **Python** 3.x
-- **Зависимости**: `packaging` (для сравнения версий)
-- **ОС**:
-  - **Windows** — полная поддержка автопоиска через реестр и UAC.
-  - **Linux** — автопоиск в `/usr/share/antigravity-ide`, определение версии через `dpkg`/`rpm`/`package.json`, sudo-повышение.
-  - **macOS** — автопоиск в `/Applications/Antigravity IDE.app` и `~/Applications/Antigravity IDE.app`, определение версии через `package.json`, ad-hoc переподпись через `codesign` (Xcode Command Line Tools).
-- **Минимальная версия Antigravity 2.0**: `2.5.0`
-- **Минимальная версия Antigravity IDE**: `2.1.1`
-- **Поддерживаемые версии**: `2.3.0` и выше для Antigravity 2.0, `2.1.1` и выше для IDE
-
-## 🛠️ Сборка
-
-Для сборки исполняемых файлов рекомендуется использовать виртуальное окружение:
-
-1. **Создание и активация виртуального окружения:**
-   * **Windows:**
-     ```bash
-     cd source
-     python -m venv .venv
-     .venv\Scripts\activate
-     ```
-   * **Linux / macOS:**
-     ```bash
-     cd source
-     python3 -m venv .venv
-     source .venv/bin/activate
-     ```
-
-2. **Установка зависимостей:**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-3. **Сборка через PyInstaller:**
-   * **Windows:**
-     ```bash
-     pyinstaller --onefile --uac-admin --icon=icon.ico --name="Open_AG_Patcher_Windows" --noupx --clean --version-file=version.txt main.py
-     ```
-   * **Linux:**
-     ```bash
-     pyinstaller --onefile --icon=icon.ico --name="Open_AG_Patcher_Linux" --hidden-import=packaging --hidden-import=packaging.version --hidden-import=packaging.specifiers --hidden-import=packaging.requirements main.py
-     ```
-   * **macOS (Universal2):**
-     ```bash
-     pyinstaller --onefile --name="Open_AG_Patcher_macOS" --target-arch universal2 --hidden-import=packaging --hidden-import=packaging.version --hidden-import=packaging.specifiers --hidden-import=packaging.requirements main.py
-     ```
-
-## Структура проекта
-
-- `source/main.py` — основная точка входа в патчер (выполняет проверку прав доступа и запуск CLI).
-- `source/patcher/` — основной исходный код патчера с модульной архитектурой:
-  - `constants.py` — глобальные константы, регулярные выражения, версии.
-  - `cli.py` — консольный интерфейс пользователя, меню и обработка ввода.
-  - `utils/` — системные вспомогательные утилиты (цвета консоли, права администратора, POSIX-права, хэширование файлов, атомарная замена бинарей `atomic.py`).
-  - `ide/` — логика поиска и патчинга непосредственно Antigravity IDE (файлы `main.js`).
-  - `agy/` — логика поиска и байт-сигнатурного патчинга бинаря Antigravity CLI (`agy`/`agy.exe`).
-  - `manager/` — логика поиска и байт-сигнатурного патчинга бинаря Antigravity Manager (`language_server`/`language_server.exe`).
-  - `vscode/` — логика поиска и патчинга расширения `google.google-antigravity` для VS Code (`extension.js`) и скачанного им бинаря в `~/.gemini/bin`.
-- `source/requirements.txt` — зависимости для сборки и запуска.
-- `source/build.txt` — примеры команд сборки под разные ОС.
-- `source/icon.ico` — иконка для `exe`/`app`.
-
-# 📜 Лицензия и атрибуция
-
-Проект распространяется под лицензией GPL-3.0. Полный текст лицензии содержится в файле [`LICENSE`](LICENSE).
-
-Часть изменений и решений в данном проекте основана на наработках репозитория [eligibility-antigravity-patcher](https://github.com/QNIX-Dev/eligibility-antigravity-patcher), распространяемого под лицензией MIT. Все интеграции и изменения выполнены с сохранением авторских прав и указанием первоисточника.
+> **原理**：数据目录被移走后，Antigravity 会从零创建配置 —— 新 token、干净配额，旧的配额绑定被重置。
+> 补丁改的是安装目录里的 `main.js` / 二进制，**不在这两个目录里**，所以移动数据目录不会影响补丁，不需要重新打。
+
+### Antigravity CLI 报「You do not have a valid license of this product (#3501)」
+同样是 Google 服务端的许可判定，补丁无能为力 —— 换地区账号或买订阅。
+
+### 补丁报 `✗ isGoogleInternal -> true (auth) — pattern not found`
+99% 的情况是**补丁工具找错了 `main.js`**（找到了别的 Electron 应用的 `main.js`）。
+
+1. 看菜单顶部打印的目标路径，应该是：
+   - Windows：`%LOCALAPPDATA%\Programs\Antigravity IDE\resources\app\out\main.js`
+   - Linux：`/usr/share/antigravity-ide/resources/app/out/main.js`
+   - macOS：`/Applications/Antigravity IDE.app/Contents/Resources/app/out/main.js`
+2. 路径不对就用 **TOOLS → `11`** 手动指定
+3. 也确认补丁程序所在目录里没有多余的 `main.js`
 
 ---
-# 💰 Поддержать автора
-+ **SBER**: `2202 2050 1464 4675`
+
+## 🔍 文件查找逻辑
+
+### `main.js`（Antigravity IDE）
+
+1. 命令行参数（目录或 `main.js` 本身）
+2. 当前目录 `./main.js`
+3. 标准路径：
+   - Windows：`%LOCALAPPDATA%\Programs\Antigravity IDE`
+   - Linux：`/usr/share/antigravity-ide`、`/opt/Antigravity IDE`、`/opt/Antigravity IDE/resources/app/out`
+   - macOS：`/Applications/Antigravity IDE.app/Contents/Resources/app`、`~/Applications/...`
+4. Windows 注册表 `{AA73B3E3-C6C8-45C8-B1DC-4AE56C751432}_is1`
+
+目录内依次检查：`resources/app/out/main.js` → `resources/app/main.js` → `out/main.js` → `main.js`。
+macOS 也接受直接传 `.app` 路径。
+
+### `agy`（Antigravity CLI）
+
+先看命令行参数 / `11 → 3`，再 `PATH`，最后标准目录：
+
+- Windows：`%LOCALAPPDATA%`、`%PROGRAMFILES%`、`%ProgramData%`、`%APPDATA%`、scoop
+- Linux/macOS：`/usr/local/bin`、`/usr/bin`、`/opt/antigravity/bin`、`~/.local/bin`、`~/bin`
+
+多份副本时取 mtime 最新的那份。
+
+### VS Code 扩展
+
+`~/.vscode/extensions` → `~/.vscode-insiders/extensions` → `~/.vscode-oss/extensions` → `~/.vscode-server/extensions`（可用环境变量 `VSCODE_EXTENSIONS` 覆盖），按 `google.google-antigravity-*` 匹配，多版本取最新。
+
+### `~/.gemini/bin`
+
+扩展下载的二进制：Windows 是 `antigravity.exe`/`agy.exe`，POSIX 是 `antigravity`/`agy`。没有的话，说明扩展还没跑过 —— 先在 VS Code 里启动一次扩展让它下载。
+
+---
+
+## 🔎 版本判定
+
+| 平台 | 方式 |
+|---|---|
+| Windows | 注册表 `DisplayVersion` |
+| Linux (deb) | `dpkg-query -W antigravity-ide` |
+| Linux (rpm) | `rpm -q --queryformat %{VERSION} antigravity-ide` |
+| Linux (portable/snap/flatpak) | `main.js` 同目录的 `package.json` |
+| macOS | `Info.plist` 的 `CFBundleShortVersionString`（回退 `package.json`） |
+
+最低版本：Antigravity 2.0 ≥ `2.5.5`、Antigravity IDE ≥ `2.1.1`。检测不到会提示确认后继续。
+
+---
+
+## 🔒 已打补丁检测
+
+打之前会先判断：`if (this.X.isGoogleInternal)` 已被替换为 `if (true)`、且不存在未修改的 `isGoogleInternal`，就认为**已经打过**，询问是否再打一次。
+
+---
+
+## 🛡️ 权限
+
+- **Windows**：自动 UAC 提权（`ShellExecuteW` + `runas`）
+- **Linux**：非 root 时建议 `sudo` 重启；拒绝则以当前用户继续（会警告）
+- **macOS**：同 POSIX 分支；写 `/Applications` 需要 `sudo`，写 `~/Applications` 不需要
+
+---
+
+## 🍎 macOS 专项说明
+
+### 打完补丁为什么要重签
+Electron 应用启用 Hardened Runtime 后，`.app` 内任何文件被改动都会破坏签名，直接启动失败。所以补丁后会自动执行：
+
+```bash
+codesign --force --deep --sign - /path/to/Antigravity.app    # ad-hoc 签名
+xattr -dr com.apple.quarantine /path/to/Antigravity.app
+```
+
+ad-hoc（`--sign -`）足够本机启动，不需要 Apple 开发者证书，也不需要公证。
+需要系统里有 `codesign`（Xcode Command Line Tools：`xcode-select --install`）。
+
+> 顺序很重要：必须**先重签内部二进制，再重签整个 `.app`**，否则整包密封会失配。
+
+### `Operation not permitted`
+写 `.app` 内部被系统拦截时：
+
+1. 给终端（或补丁 App 所在的 Terminal）开「系统设置 → 隐私与安全性 → 完全磁盘访问权限」
+2. 或先手工去隔离：`sudo xattr -rd com.apple.quarantine /path/to/X.app`
+
+### Apple Silicon 为什么必须重签
+M 系列芯片在 `exec` 时强制校验 Mach-O 签名，签名与内容不符会被内核直接 `SIGKILL`（表现为"点开就消失"，连报错都没有）。
+
+### 打补丁后打不开
+1. `which codesign` 确认存在
+2. `codesign -dv /path/to/X.app 2>&1 | grep Signature` 应为 `Signature=adhoc`
+3. 仍被拦：系统设置 → 隐私与安全性 → 底部「仍要打开」
+
+---
+
+## ⚙️ 环境要求
+
+- **Python** 3.9+（仅源码运行/自建需要）
+- **依赖**：`packaging`
+- **macOS**：11.0+，Apple Silicon（arm64）；Intel 可自行用 universal2 Python 重打包
+- **最低版本**：Antigravity 2.0 `2.5.5`、Antigravity IDE `2.1.1`
+
+---
+
+## 🛠️ 构建
+
+### macOS（本分支新增，一条命令出三个 App）
+
+```bash
+cd source
+PYTHON=/usr/local/bin/python3.12 ./build_macos.sh
+# 依赖已装好时会跳过 pip；国内建议加镜像：
+# PIP_INDEX_URL=https://pypi.tuna.tsinghua.edu.cn/simple PYTHON=... ./build_macos.sh
+```
+
+产出：
+
+| 文件 | 说明 |
+|---|---|
+| `dist/反重力补丁.app` | 图形界面（两个按钮） |
+| `dist/反重力补丁开关.app` | 终端菜单开关 |
+| `dist/Open AG Patcher.app` | 完整版菜单 |
+| `dist/OpenAGPatcher`、`dist/AGToggle` | 对应的命令行版（Mach-O arm64） |
+
+### Windows
+
+```bash
+pip install -r requirements.txt
+pyinstaller --onefile --uac-admin --icon=icon.ico --name="Open_AG_Patcher_Windows" --noupx --clean --version-file=version.txt main.py
+```
+
+### Linux
+
+```bash
+pyinstaller --onefile --icon=icon.ico --name="Open_AG_Patcher_Linux" \
+  --hidden-import=packaging --hidden-import=packaging.version \
+  --hidden-import=packaging.specifiers --hidden-import=packaging.requirements main.py
+```
+
+---
+
+## 📁 项目结构
+
+```
+source/
+├── main.py             # 完整版入口（终端菜单）
+├── toggle_main.py      # 一键开关入口（终端）
+├── gui_main.py         # 图形界面入口（Tkinter，两个按钮）
+├── patch_ops.py        # 补丁核心操作（GUI/终端共用，无界面代码）
+├── build_macos.sh      # macOS 一键构建（产出 3 个 .app）
+├── icon.ico / icon.icns
+└── patcher/
+    ├── cli.py          # 终端菜单与输入
+    ├── constants.py    # 版本、颜色、Windows 注册表 GUID
+    ├── ide/            # main.js 查找与补丁
+    ├── agy/            # agy 二进制字节签名补丁
+    ├── manager/        # language_server（桌面版后端）补丁
+    ├── vscode/         # VS Code 扩展补丁
+    └── utils/          # 控制台、权限、原子替换、macOS 重签、更新检查
+```
+
+---
+
+## 📜 许可证与致谢
+
+本项目遵循 **GPL-3.0**（见 [`LICENSE`](./LICENSE)）。
+
+- 上游：[AvenCores/open-antigravity-patcher](https://github.com/AvenCores/open-antigravity-patcher)（GPL-3.0）
+- 上游参考：[QNIX-Dev/eligibility-antigravity-patcher](https://github.com/QNIX-Dev/eligibility-antigravity-patcher)（MIT）
+- 本分支：macOS Apple Silicon 适配、图形界面、中文文档（2026-11）
+
+> 本项目只修改本地安装的客户端文件，不涉及任何账号凭据、不上传数据、不与服务器通信（除检查更新）。
+> 请自行确认所在地区与服务条款的适用性。

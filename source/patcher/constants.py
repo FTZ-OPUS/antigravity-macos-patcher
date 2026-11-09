@@ -1,4 +1,4 @@
-VERSION = "1.3.8"
+VERSION = "1.4.0"  # 本分支版本（对应上游 1.3.8 + macOS 原生支持 / 图形界面）
 MIN_AG_VERSION = "2.5.5"
 MIN_ANTIGRAVITY_VERSION = "2.15.0"
 DOWNLOAD_URL = "https://antigravity.google/download"
