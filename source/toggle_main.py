@@ -35,7 +35,6 @@ W = 50
 def _rule(ch="─"):
     print(f"  {color(ch * W, COLOR_DIM)}")
 
-
 def _title(text):
     print()
     _rule("═")
@@ -212,6 +211,89 @@ def show_status(path):
     return state, bundle, default
 
 
+def _codesign_verify(path, deep=False):
+    """独立复核代码签名（不依赖我们自己的判断）。"""
+    cmd = ["/usr/bin/codesign", "--verify", "--strict"]
+    if deep:
+        cmd.append("--deep")
+    cmd.append(path)
+    try:
+        r = subprocess.run(cmd, capture_output=True, text=True, timeout=180)
+        return r.returncode == 0, (r.stderr or "").strip()
+    except Exception as e:
+        return False, str(e)
+
+
+def _sig_kind(path):
+    try:
+        r = subprocess.run(["/usr/bin/codesign", "-dv", path],
+                           capture_output=True, text=True, timeout=60)
+        for line in (r.stderr or "").splitlines():
+            if "Signature=" in line:
+                return line.split("Signature=")[-1].strip()
+    except Exception:
+        pass
+    return "未知"
+
+
+def verify_and_report(path, choice, bundle):
+    """写完立刻复核：状态对不对 + 签名还有效 + 备份还在。返回 True 表示全部通过。"""
+    expect = "patched" if choice == "1" else "unpatched"
+    success_word = "开启成功" if choice == "1" else "关闭成功"
+    expect_label = "已打补丁（开启）" if expect == "patched" else "原版（未打补丁）"
+
+    rows = []
+
+    # 1) 重新读文件判定状态
+    state = get_status(path)[0]
+    label = {"patched": "已打补丁（开启）", "unpatched": "原版（未打补丁）",
+             "unknown": "无法识别"}.get(state, "无法识别")
+    rows.append(("补丁状态", label, state == expect))
+
+    # 2) 二进制签名
+    ok_bin, msg_bin = _codesign_verify(path, deep=False)
+    rows.append(("二进制签名", f"有效 · {_sig_kind(path)}" if ok_bin else "无效", ok_bin))
+
+    # 3) 整包签名（有 .app 时）
+    if bundle:
+        ok_app, msg_app = _codesign_verify(bundle, deep=True)
+        rows.append((os.path.basename(bundle)[:22], "签名密封有效" if ok_app else "签名密封损坏", ok_app))
+
+    # 4) 备份是否还在（关闭之后也得留着，方便再打开）
+    bak = path + BAK_EXT
+    bak_ok = os.path.exists(bak) and file_size(bak) > 1024 * 1024
+    rows.append(("原版备份", f"{os.path.basename(bak)} ({format_bytes(file_size(bak))})"
+                 if bak_ok else "缺失", bak_ok))
+
+    all_ok = all(r[2] for r in rows)
+
+    print()
+    _rule("═")
+    head = f"{'✅' if all_ok else '❌'}  {success_word if all_ok else '操作未完成'}"
+    print(f"  {color(head, COLOR_GREEN if all_ok else COLOR_RED, COLOR_BOLD)}")
+    _rule("═")
+    for name, detail, good in rows:
+        mark = color("✓", COLOR_GREEN) if good else color("✗", COLOR_RED)
+        print(f"   {mark} {name}：{detail}")
+    _rule("═")
+
+    if all_ok:
+        if choice == "2":
+            print(f"  现在是{color(expect_label, COLOR_GREEN, COLOR_BOLD)}，"
+                  f"可以放心用{color('支持地区', COLOR_BOLD)}的账号登录了。")
+        else:
+            print(f"  现在是{color(expect_label, COLOR_GREEN, COLOR_BOLD)}，"
+                  f"用{color('不支持地区', COLOR_BOLD)}的账号登录即可。")
+    else:
+        bad = [r[0] for r in rows if not r[2]]
+        err(f"以下项没通过：{', '.join(bad)}")
+        hint("可再用完整版 Open AG Patcher 复原（RESTORE → 6），")
+        hint(f"或直接把备份 {os.path.basename(bak)} 覆盖回去。")
+        if bundle:
+            hint("若只有整包签名损坏：codesign --force --deep --sign - \"%s\"" % bundle)
+    return all_ok
+
+
 def main():
     setup_console()
 
@@ -256,15 +338,25 @@ def main():
 
     print()
     changed = do_patch(path) if choice == "1" else do_restore(path)
+    if not changed:
+        print()
+        _rule("═")
+        print(f"  {color('❌ 操作失败，文件未改动（或已回退）', COLOR_RED, COLOR_BOLD)}")
+        _rule("═")
+        ask("\n  按回车退出…")
+        return 1
+
+    # 写入后独立复核
+    all_ok = verify_and_report(path, choice, bundle)
 
     print()
-    if changed and bundle and not test_mode:
+    if all_ok and bundle and not test_mode:
         print(f"  {color('改动已写入，需要重启 Antigravity 才生效。', COLOR_BOLD)}")
         if ask("  现在重新打开 Antigravity？(y/n) > ").lower().startswith("y"):
             reopen_app(bundle)
     print()
     ask("  按回车退出…")
-    return 0 if changed else 1
+    return 0 if all_ok else 1
 
 
 if __name__ == "__main__":

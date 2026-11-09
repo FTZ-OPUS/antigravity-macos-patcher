@@ -36,9 +36,11 @@ echo "==> venv: $VENV"
 if [ ! -x "$VENV/bin/python" ]; then
   "$PYTHON" -m venv "$VENV"
 fi
-"$VENV/bin/python" -m pip install --quiet --upgrade pip
-"$VENV/bin/python" -m pip install --quiet pyinstaller "packaging"
-
+# 依赖已装好就跳过 pip（国内网络经常卡 SSL 重试，重打包时没必要每次联网）
+if ! "$VENV/bin/python" -c "import PyInstaller, packaging" 2>/dev/null; then
+  "$VENV/bin/python" -m pip install --quiet --upgrade pip
+  "$VENV/bin/python" -m pip install --quiet pyinstaller "packaging"
+fi
 echo "==> icon.ico -> icon.icns"
 ICNS="$SOURCE_DIR/icon.icns"
 if [ ! -f "$ICNS" ] || [ "$SOURCE_DIR/icon.ico" -nt "$ICNS" ]; then
