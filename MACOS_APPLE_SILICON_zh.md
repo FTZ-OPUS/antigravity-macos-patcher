@@ -9,9 +9,46 @@
 | 文件 | 说明 |
 |---|---|
 | `dist/Open AG Patcher.app` | 双击即用的 App（图标 / 自动打开终端菜单 / ad-hoc 签名） |
-| `dist/OpenAGPatcher` | 同一个程序的命令行版，纯 Mach-O **arm64** 单文件，可直接 `sudo ./OpenAGPatcher` |
+| `dist/反重力补丁开关.app` | **一键开关**：只做「打补丁 / 还原原版」两件事，适合多账号切换 |
+| `dist/OpenAGPatcher` | 完整版命令行，纯 Mach-O **arm64** 单文件 |
+| `dist/AGToggle` | 开关的命令行版 |
 | `source/icon.icns` | 由 `icon.ico` 转换来的 macOS 图标 |
-| `source/build_macos.sh` | 一键重建脚本（重新打包只需跑它） |
+| `source/build_macos.sh` | 一键重建脚本（重新打包只需跑它，会同时产出上面两个 App） |
+
+---
+
+## 1.5 一键开关（多账号场景）
+
+有**两个账号**（一个地区受支持、一个不受支持）时，别每次翻完整菜单——用 `反重力补丁开关.app`：
+
+```
+══════════════════════════════════════════════════
+  反重力补丁开关
+  目标：…/Antigravity.app/Contents/Resources/bin/language_server
+  应用：Antigravity.app
+  备份：language_server.agybak (162.6 MB)
+
+  当前状态：● 已打补丁（开启）
+  登「支持地区」的账号 → 建议按 2 关闭，还原原版
+
+  [1] 开启补丁  （不支持地区的账号用）
+  [2] 关闭补丁  （还原原版，支持地区的账号用）
+  [0] 退出
+```
+
+它会自动判断当前状态、回车默认选"相反的那一个"，并在写入前帮你退出 Antigravity、写入后问你要不要重新打开。
+
+**典型切换流程**
+
+| 要登的账号 | 操作 |
+|---|---|
+| 地区**不支持**的那个 | 双击 → `1` 开启补丁 → 打开 Antigravity 登录 |
+| 地区**支持**的那个 | 双击 → `2` 关闭补丁（还原原版）→ 打开 Antigravity 登录 |
+
+设计取向：**支持地区的账号尽量用原版**，少一次二进制改动就少一分被风控关注的可能。
+补丁只改本地 `language_server` 一个函数的判定，不动账号、不联网。
+
+> 写入时是原子替换（`os.replace`），中途断电最坏也只是回到旧文件；`language_server.agybak` 备份永远保留。
 
 ---
 
