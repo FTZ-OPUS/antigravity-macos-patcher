@@ -17,7 +17,11 @@ from tkinter import font as tkfont
 
 import patch_ops as ops
 
-LOG_PATH = os.path.expanduser("~/Library/Logs/反重力补丁.log")
+LOG_PATH = os.path.expanduser(
+    "~/Library/Logs/反重力补丁.log" if sys.platform == "darwin"
+    else os.path.join(os.environ.get("LOCALAPPDATA", os.path.expanduser("~")), "反重力补丁.log")
+)
+CURSOR_HAND = "hand2" if os.name == "nt" else "pointinghand"
 
 BG     = "#FFFFFF"
 TEXT   = "#1D1D1F"
@@ -46,7 +50,8 @@ def setup_log():
 
 def pick_font(root):
     families = set(tkfont.families(root))
-    for name in ("PingFang SC", "Hiragino Sans GB", "Heiti SC", "STHeiti", "Arial Unicode MS"):
+    for name in ("PingFang SC", "Hiragino Sans GB", "Heiti SC", "STHeiti",
+                 "Microsoft YaHei UI", "Microsoft YaHei", "SimHei", "Arial Unicode MS"):
         if name in families:
             return name
     return "Helvetica"
@@ -68,7 +73,7 @@ class RoundButton(tk.Canvas):
                                      fill=fill, outline="")
         self.label = self.create_text(width / 2, height / 2 + 1, text=text,
                                       fill=fg, font=(family, size, "bold"))
-        self.configure(cursor="pointinghand")
+        self.configure(cursor=CURSOR_HAND)
         self.bind("<Button-1>", self._on_click)
         self.bind("<Enter>", self._on_enter)
         self.bind("<Leave>", self._on_leave)
@@ -101,7 +106,7 @@ class RoundButton(tk.Canvas):
             self.fg = fg
         self.itemconfigure(self.rect, fill=self.fill if on else GRAY)
         self.itemconfigure(self.label, fill=self.fg if on else "#B9B9BF")
-        self.configure(cursor="pointinghand" if on else "arrow")
+        self.configure(cursor=CURSOR_HAND if on else "arrow")
 
 
 class App:
@@ -110,6 +115,7 @@ class App:
         self.family = pick_font(root)
         self.busy = False
         self.bundle = ""
+        self.reopen_target = ""
         self.path = ""
         self._target = (target or "").strip()   # 记住用户/测试指定的目标，刷新时不要重新猜
         self.q = queue.Queue()      # 后台线程 → 主线程 的结果队列（Tk 不允许跨线程直接改界面）
@@ -212,6 +218,7 @@ class App:
                                 "没有找到 Antigravity 桌面版。请确认 Antigravity.app 已安装。")
             return
         self.bundle = ops.app_bundle(path)
+        self.reopen_target = self.bundle or ops.app_exe(path)
         st = ops.state_of(path)
         self.set_state(st)
         # 两个按钮始终可点（已经是该状态时点了也会给出"关闭成功/开启成功"确认）
@@ -228,8 +235,8 @@ class App:
         self._run("off")
 
     def do_open(self):
-        if self.bundle:
-            ok, msg = ops.reopen_app(self.bundle)
+        if self.reopen_target:
+            ok, msg = ops.reopen_app(self.reopen_target)
             if not ok:
                 self.set_result("打开失败", RED, msg)
 
@@ -284,8 +291,8 @@ class App:
                                 "（本来就处于该状态，本次未改动文件）")
             else:
                 self.set_result(f"{word}成功", GREEN,
-                                "请重新打开 Antigravity 才会生效。" if self.bundle else "已生效。")
-                self.btn_open.set_enabled(bool(self.bundle), fill=BLUE, fill_hover="#0A6FD8",
+                                "请重新打开 Antigravity 才会生效。" if self.reopen_target else "已生效。")
+                self.btn_open.set_enabled(bool(self.reopen_target), fill=BLUE, fill_hover="#0A6FD8",
                                           fg="#FFFFFF")
         else:
             self.set_result(f"{word}失败", RED, detail or "未知原因")

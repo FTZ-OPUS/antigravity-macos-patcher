@@ -182,6 +182,11 @@ build_gui() {
   /usr/libexec/PlistBuddy -c "Set :CFBundleName 反重力补丁" "$DIST/$app_dir/Contents/Info.plist" 2>/dev/null || true
   /usr/libexec/PlistBuddy -c "Add :CFBundleDisplayName string 反重力补丁" "$DIST/$app_dir/Contents/Info.plist" 2>/dev/null \
     || /usr/libexec/PlistBuddy -c "Set :CFBundleDisplayName 反重力补丁" "$DIST/$app_dir/Contents/Info.plist" 2>/dev/null || true
+  # --windowed 打包后版本默认是 0.0.0，这里补回真实版本号
+  /usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString $VERSION" "$DIST/$app_dir/Contents/Info.plist" 2>/dev/null \
+    || /usr/libexec/PlistBuddy -c "Add :CFBundleShortVersionString string $VERSION" "$DIST/$app_dir/Contents/Info.plist" 2>/dev/null || true
+  /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $VERSION" "$DIST/$app_dir/Contents/Info.plist" 2>/dev/null \
+    || /usr/libexec/PlistBuddy -c "Add :CFBundleVersion string $VERSION" "$DIST/$app_dir/Contents/Info.plist" 2>/dev/null || true
   /usr/bin/codesign --force --deep --sign - "$DIST/$app_dir" >/dev/null 2>&1 || true
   /usr/bin/xattr -dr com.apple.quarantine "$DIST/$app_dir" 2>/dev/null || true
   echo "    $DIST/$app_dir"
