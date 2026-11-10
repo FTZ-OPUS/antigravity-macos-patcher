@@ -45,15 +45,26 @@
 
 **成品在 [Releases](https://github.com/FTZ-OPUS/antigravity-macos-patcher/releases/latest) 页面**：
 
+**macOS（Apple Silicon）**
+
 | 附件 | 说明 |
 |---|---|
 | `反重力补丁.app` | ⭐ 推荐：图形界面，两个按钮，最简单 |
 | `反重力补丁开关.app` | 终端菜单版开关（多账号切换用） |
 | `Open AG Patcher.app` | 完整版（含 IDE / CLI / VS Code 扩展补丁） |
 
+**Windows（x64）**
+
+| 附件 | 说明 |
+|---|---|
+| `AGPatch-1.4.0-Windows-x64.exe` | ⭐ 同一个图形界面，单文件 exe，**不需要装 Python** |
+
+> Windows 版由 GitHub Actions 在 `windows-latest` 上编译（`.github/workflows/build-windows.yml`），
+> 因为 PyInstaller 不能跨平台编译。想自己出包：Actions → build-windows → Run workflow。
+
 **图形版怎么用（小白向）**
 
-1. 先 `Cmd+Q` 完全退出 Antigravity（Dock 里不能有小圆点）
+1. 先完全退出 Antigravity（macOS：`Cmd+Q`；Windows：托盘 → 退出）
 2. 双击 `反重力补丁.app`
 3. 顶部会显示当前状态：`● 已打补丁（开启）` 或 `○ 原版（未打补丁）`
 4. 点 **开启补丁**（登不支持地区的账号）或 **关闭补丁**（登支持地区的账号）
