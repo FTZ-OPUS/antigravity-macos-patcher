@@ -1,19 +1,19 @@
 <div align="center">
 
-**macOS Apple Silicon（arm64）原生版 · 中文文档**
+**Windows x64 · macOS（Apple Silicon arm64 & Intel x86_64）全平台原生版 · 中文文档**
 
 [![Release](https://img.shields.io/github/v/release/FTZ-OPUS/antigravity-macos-patcher?style=for-the-badge)](https://github.com/FTZ-OPUS/antigravity-macos-patcher/releases/latest)
-<img src="https://img.shields.io/badge/platform-macOS%20arm64-000000?style=for-the-badge&logo=apple" alt="macOS arm64">
+<img src="https://img.shields.io/badge/platform-Windows%20x64%20%7C%20macOS%20arm64%20%7C%20Intel%20x86__64-000000?style=for-the-badge&logo=apple" alt="Windows and macOS">
 <img src="https://img.shields.io/badge/python-3.9%2B-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54" alt="Python">
 <a href="./LICENSE"><img src="https://img.shields.io/badge/License-GPL--3.0-blue?style=for-the-badge" alt="GPL-3.0"></a>
 
 </div>
 
-# 🔑 反重力补丁（Open AG Patcher · macOS 增强版）
+# 🔑 反重力补丁（Open AG Patcher · Windows & macOS 增强版）
 
-针对 **Antigravity 2.0 桌面版 / Antigravity IDE / Antigravity CLI（`agy`）/ VS Code 的 Google Antigravity 扩展** 的开源补丁工具：**无需 VPN、无需更换 Google 账号地区** 即可解除地区限制。
+针对 **Antigravity 2.0 桌面版 / Antigravity IDE / Antigravity CLI（`agy`）/ VS Code 的 Google Antigravity 扩展** 的开源地区补丁工具：**无需 VPN、无需更换 Google 账号地区** 即可解除地区限制。
 
-本仓库是 [AvenCores/open-antigravity-patcher](https://github.com/AvenCores/open-antigravity-patcher) `v1.3.8` 的**二次开发分支**：把上游文档完整译为中文，并补上 macOS Apple Silicon 的原生支持（双击即用，不需要装 Python、不需要敲命令）。
+本仓库基于 [AvenCores/open-antigravity-patcher](https://github.com/AvenCores/open-antigravity-patcher) `v1.3.8` 二次开发：提供 **Windows x64、macOS Apple Silicon (M 系列 arm64)、macOS Intel (x86_64)** 图形界面双按钮版及全套开箱即用安装包，无需装 Python、无需敲命令。
 
 > 俄文原版文档保留在 [`README.ru.md`](./README.ru.md)，macOS 改造细节见 [`MACOS_APPLE_SILICON_zh.md`](./MACOS_APPLE_SILICON_zh.md)。
 
@@ -21,14 +21,13 @@
 
 ## 🌟 本分支的二次开发内容
 
-上游只有 Windows / Linux 的成品二进制，macOS 只能自己开终端跑源码。本分支补齐了这些：
-
 | 改动 | 说明 |
 |---|---|
-| **macOS 原生 App（arm64）** | `反重力补丁.app`：图形界面，两个按钮（开启 / 关闭），点完直接显示「开启成功 / 开启失败 / 关闭成功 / 关闭失败」 |
+| **Windows / macOS 图形版 App** | `反重力补丁`：两个按钮（开启补丁 / 关闭补丁），点完立刻做四项独立复核，直接显示「开启成功 / 开启失败 / 关闭成功 / 关闭失败」 |
+| **macOS 双架构原生包（arm64 + Intel x86_64）** | 同时提供 Apple Silicon (M1–M5) 原生包与 Intel 老款 Mac (x86_64, macOS 10.15+) 原生 `.dmg` / `.zip` |
 | **一键补丁开关** | `反重力补丁开关.app`：终端菜单版开关，适合多账号切换（受支持地区用原版、不支持地区用补丁） |
 | **完整版 App** | `Open AG Patcher.app`：保留上游全部 12 项功能（IDE / 2.0 / CLI / VS Code 四项补丁 + 四项还原 + 工具） |
-| **构建脚本** | `source/build_macos.sh`：一条命令产出上面三个 App（venv → icns → PyInstaller arm64 → .app → ad-hoc 签名 → 去 quarantine） |
+| **自动化构建脚本 & CI** | `source/build_macos.sh` 一条命令构建 macOS `arm64` / `x86_64` 全部 App 与 `.dmg`/`.zip`；`.github/workflows/build-windows.yml` 自动产出 Windows exe |
 | **中文文档** | 本文件 + `MACOS_APPLE_SILICON_zh.md` |
 
 顺手修掉的上游问题：
@@ -37,48 +36,60 @@
 2. **整包签名被写坏**：上游先重签 `.app` 再重签内部二进制，后者会让整包密封（`_CodeSignature/CodeResources`）失配，`codesign --verify --deep --strict` 报 `a sealed resource is missing or invalid`。现在改为**先内部二进制、后整包**。
 3. **双击启动抛异常**：stdin 关闭时 `input()` 抛 `EOFError`，被顶层捕获成「Unexpected error: EOF when reading a line」。现在按 Ctrl-D 或没有输入时干净退出。
 4. **Finder 启动扫全盘**：启动时 `cwd` 是 `/`，便携版搜索会 `os.walk("/")` 白等很久。现在跳过根目录类路径。
-5. **构建命令不可用**：上游 `--target-arch universal2` 在 arm64-only 的 Python（python.org / Homebrew）上必然失败，脚本改为直接出 arm64。
+5. **macOS 权限提示适配 + 双架构编译**：修复 macOS 下无写入权限误报 Windows 管理员提示的问题；`build_macos.sh` 支持基于 universal2 Python 分别产出 `arm64` 与 `x86_64` 原生应用。
 
 ---
 
 ## 📦 下载与使用
 
-**成品在 [Releases](https://github.com/FTZ-OPUS/antigravity-macos-patcher/releases/latest) 页面**：
+**成品在 [Releases (Latest)](https://github.com/FTZ-OPUS/antigravity-macos-patcher/releases/latest) 页面**：
 
-**macOS（Apple Silicon）**
-
-| 附件 | 说明 |
-|---|---|
-| `反重力补丁.app` | ⭐ 推荐：图形界面，两个按钮，最简单 |
-| `反重力补丁开关.app` | 终端菜单版开关（多账号切换用） |
-| `Open AG Patcher.app` | 完整版（含 IDE / CLI / VS Code 扩展补丁） |
-
-**Windows（x64）**
+### Windows（64 位）
 
 | 附件 | 说明 |
 |---|---|
-| `AGPatch-1.4.0-Windows-x64.exe` | ⭐ 同一个图形界面，单文件 exe，**不需要装 Python** |
+| `AGPatch-1.4.0-Windows-x64.exe` | ⭐ **单文件 exe**：双击即用（图形界面，两个按钮，无需装 Python） |
+| `AGPatch-1.4.0-Windows-x64.zip` | 含 `反重力补丁.exe` + 中文《使用说明.txt》 |
 
-> Windows 版由 GitHub Actions 在 `windows-latest` 上编译（`.github/workflows/build-windows.yml`），
-> 因为 PyInstaller 不能跨平台编译。想自己出包：Actions → build-windows → Run workflow。
+> Windows 版由 GitHub Actions 在 `windows-latest` 上编译（`.github/workflows/build-windows.yml`）。
+
+### macOS Apple Silicon（M1 / M2 / M3 / M4 / M5，arm64）
+
+| 附件 | 说明 |
+|---|---|
+| `AGPatch-1.4.0-macOS-arm64.dmg` | ⭐ **推荐 DMG 安装包**：拖入应用程序，含图形版《反重力补丁.app》+ 说明 |
+| `AGPatch-1.4.0-macOS-arm64.zip` | 压缩包版本，解压直接用 |
+| `AGPatch-Toggle-1.4.0-macOS-arm64.zip` | 终端菜单一键开关（`反重力补丁开关.app`，多账号切换用） |
+| `OpenAGPatcher-1.4.0-macOS-arm64.zip` | 完整版（含 IDE / CLI / VS Code 扩展补丁） |
+
+### macOS Intel（x86_64，老款 Intel 芯片 Mac，macOS 10.15+）
+
+| 附件 | 说明 |
+|---|---|
+| `AGPatch-1.4.0-macOS-Intel-x86_64.dmg` | ⭐ **Intel 专用 DMG 安装包**：原生 x86_64 编译，含《反重力补丁.app》+ 说明 |
+| `AGPatch-1.4.0-macOS-Intel-x86_64.zip` | Intel 压缩包版本 |
+| `AGPatch-Toggle-1.4.0-macOS-Intel-x86_64.zip` | Intel 终端一键开关（`反重力补丁开关.app`） |
+| `OpenAGPatcher-1.4.0-macOS-Intel-x86_64.zip` | Intel 完整版（`Open AG Patcher.app`） |
 
 **图形版怎么用（小白向）**
 
-1. 先完全退出 Antigravity（macOS：`Cmd+Q`；Windows：托盘 → 退出）
-2. 双击 `反重力补丁.app`
+1. 先完全退出 Antigravity（macOS：`Cmd+Q`，确保 Dock 无小圆点；Windows：托盘 → 退出）
+2. 双击 `反重力补丁.app`（Windows 双击 `AGPatch-1.4.0-Windows-x64.exe` / `反重力补丁.exe`）
 3. 顶部会显示当前状态：`● 已打补丁（开启）` 或 `○ 原版（未打补丁）`
 4. 点 **开启补丁**（登不支持地区的账号）或 **关闭补丁**（登支持地区的账号）
 5. 下方立刻显示结果：
    - `开启成功` / `关闭成功`（绿色）
    - `开启失败` / `关闭失败`（红色，并说明原因）
 
-> 每次操作都会做**四项独立复核**才敢报成功：补丁状态、二进制签名、应用签名密封、原版备份。
+> 每次操作都会做**三至四项独立复核**才报成功：补丁状态、（macOS）二进制签名与应用签名密封、（Windows）文件大小、原版备份。
 
-**首次打开被 macOS 拦住**（提示"无法验证开发者"）：**右键 → 打开** 一次即可；或者
+**首次打开被 macOS 拦住**（提示"无法验证开发者"或"已损坏"）：在「终端」粘贴回车：
 
 ```bash
 xattr -dr com.apple.quarantine "/Applications/反重力补丁.app"
 ```
+
+或者打开 **系统设置 → 隐私与安全性 → 仍要打开**（老版本系统可在 App 上 **右键 → 打开**）。
 
 ---
 
@@ -327,30 +338,34 @@ M 系列芯片在 `exec` 时强制校验 Mach-O 签名，签名与内容不符�
 
 - **Python** 3.9+（仅源码运行/自建需要）
 - **依赖**：`packaging`
-- **macOS**：11.0+，Apple Silicon（arm64）；Intel 可自行用 universal2 Python 重打包
-- **最低版本**：Antigravity 2.0 `2.5.5`、Antigravity IDE `2.1.1`
+- **macOS**：`11.0+`（Apple Silicon arm64） / `10.15+`（Intel x86_64）；同时构建双架构需使用 `universal2` 版 Python（如 python.org 官方安装包）并已启用 Rosetta 2
+- **Windows**：Windows 10 / 11 64 位
+- **最低版本**：Antigravity 2.0 `2.15.0`、Antigravity IDE `2.5.5`
 
 ---
 
 ## 🛠️ 构建
 
-### macOS（本分支新增，一条命令出三个 App）
+### macOS（一条命令构建 arm64 + Intel x86_64 全部产物与 DMG/ZIP）
 
 ```bash
 cd source
-PYTHON=/usr/local/bin/python3.12 ./build_macos.sh
-# 依赖已装好时会跳过 pip；国内建议加镜像：
-# PIP_INDEX_URL=https://pypi.tuna.tsinghua.edu.cn/simple PYTHON=... ./build_macos.sh
+./build_macos.sh all     # 同时构建 arm64 与 x86_64，输出到 dist/<arch>/ 与 dist/release/
+# 仅构建单架构：
+# ./build_macos.sh arm64
+# ./build_macos.sh x86_64
+# 国内建议加镜像：
+# PIP_INDEX_URL=https://pypi.tuna.tsinghua.edu.cn/simple ./build_macos.sh all
 ```
 
-产出：
+产出（按架构分别置于 `dist/arm64/` 与 `dist/x86_64/`，分发包位于 `dist/release/`）：
 
 | 文件 | 说明 |
 |---|---|
-| `dist/反重力补丁.app` | 图形界面（两个按钮） |
-| `dist/反重力补丁开关.app` | 终端菜单开关 |
-| `dist/Open AG Patcher.app` | 完整版菜单 |
-| `dist/OpenAGPatcher`、`dist/AGToggle` | 对应的命令行版（Mach-O arm64） |
+| `dist/<arch>/反重力补丁.app` | 图形界面（两个按钮） |
+| `dist/<arch>/反重力补丁开关.app` | 终端菜单开关 |
+| `dist/<arch>/Open AG Patcher.app` | 完整版菜单 |
+| `dist/release/AGPatch-*-macOS-*.dmg` / `.zip` | 对应架构的桌面版安装镜像 / 压缩包 |
 
 ### Windows
 

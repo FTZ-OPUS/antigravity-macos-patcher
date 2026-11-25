@@ -215,7 +215,7 @@ class App:
             self.btn_off.set_enabled(False)
             if initial:
                 self.set_result("", SUB,
-                                "没有找到 Antigravity 桌面版。请确认 Antigravity.app 已安装。")
+                                "没有找到 Antigravity 桌面版。请确认已安装 Antigravity。")
             return
         self.bundle = ops.app_bundle(path)
         self.reopen_target = self.bundle or ops.app_exe(path)

@@ -170,6 +170,12 @@ def _write_bytes(path, data):
     resign_macos_bundle(path)
 
 
+def _perm_error_msg(err):
+    if IS_WIN:
+        return "没有写入权限：请右键以管理员身份运行本程序"
+    return f"没有写入权限：{err}（请在「系统设置 → 隐私与安全性 → 完全磁盘访问权限」授权）"
+
+
 def apply_patch(path):
     """改字节 + 写盘（macOS 额外重签）。返回 (ok, detail)。"""
     st = state_of(path)
@@ -188,8 +194,8 @@ def apply_patch(path):
         return True, f"{gate.desc} @ 0x{off:x}"
     except LookupError as e:
         return False, f"找不到补丁位置：{e}"
-    except PermissionError:
-        return False, "没有写入权限：请右键以管理员身份运行本程序"
+    except PermissionError as e:
+        return False, _perm_error_msg(e)
     except Exception as e:
         return False, f"{type(e).__name__}: {e}"
 
@@ -211,8 +217,8 @@ def revert_patch(path):
             bak_data = f.read()
         _write_bytes(path, bak_data)
         return True, "已还原为原版"
-    except PermissionError:
-        return False, "没有写入权限：请右键以管理员身份运行本程序"
+    except PermissionError as e:
+        return False, _perm_error_msg(e)
     except Exception as e:
         return False, f"{type(e).__name__}: {e}"
 

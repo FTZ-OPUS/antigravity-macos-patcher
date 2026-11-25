@@ -1,6 +1,6 @@
-# macOS Apple Silicon（M 系列芯片）适配说明
+# macOS（Apple Silicon arm64 & Intel x86_64）适配说明
 
-这个 fork 把上游的 Open AG Patcher 改造成**能在 Apple Silicon 上直接双击运行的原生程序**，不再需要手动装 Python、建 venv、敲命令。
+这个 fork 把上游的 Open AG Patcher 改造成**能在 macOS（Apple Silicon M 系列芯片 + Intel x86_64 老 Mac）上直接双击运行的原生程序**，不再需要手动装 Python、建 venv、敲命令。
 
 ---
 
@@ -8,12 +8,13 @@
 
 | 文件 | 说明 |
 |---|---|
-| `dist/反重力补丁.app` | ⭐ **图形界面**：两个按钮（开启/关闭），点完直接显示成功/失败，小白可用 |
-| `dist/反重力补丁开关.app` | 终端菜单版开关，适合多账号切换 |
-| `dist/Open AG Patcher.app` | 完整版（12 项功能：IDE / 2.0 / CLI / VS Code 补丁与还原） |
-| `dist/OpenAGPatcher` / `dist/AGToggle` / `dist/AGPatchGUI` | 对应的命令行版，纯 Mach-O **arm64** |
+| `dist/<arch>/反重力补丁.app` | ⭐ **图形界面**：两个按钮（开启/关闭），点完直接显示成功/失败，小白可用 |
+| `dist/<arch>/反重力补丁开关.app` | 终端菜单版开关，适合多账号切换 |
+| `dist/<arch>/Open AG Patcher.app` | 完整版（12 项功能：IDE / 2.0 / CLI / VS Code 补丁与还原） |
+| `dist/<arch>/OpenAGPatcher`、`AGToggle` | 对应的命令行版（纯 Mach-O `arm64` / `x86_64`） |
+| `dist/release/*.dmg` / `*.zip` | 双架构现成 DMG 安装镜像与 ZIP 压缩包 |
 | `source/icon.icns` | 由 `icon.ico` 转换来的 macOS 图标 |
-| `source/build_macos.sh` | 一键重建脚本（跑一次产出上面三个 App） |
+| `source/build_macos.sh` | 一键重建脚本（`./build_macos.sh all` 同时产出 arm64 + x86_64） |
 
 ---
 
@@ -154,23 +155,25 @@ App 里故意不直接跑二进制，而是转一手 Terminal：这个工具是*
 
 ```bash
 cd source
-PYTHON=/usr/local/bin/python3.12 ./build_macos.sh     # 必须是 arm64 的 python
+./build_macos.sh all       # 同时产出 arm64 (11.0+) 与 Intel x86_64 (10.15+) .app 及 DMG/ZIP
+# 单架构构建：
+# ./build_macos.sh arm64
+# ./build_macos.sh x86_64
 ```
 
-脚本会：建 `.venv-build` → 装 `pyinstaller` + `packaging` → 生成/复用 `icon.icns` → 打 arm64 onefile → 组装 `.app` → ad-hoc 签名 → 去 quarantine。
+脚本会：自动适配 `SSL_CERT_FILE=/etc/ssl/cert.pem` → 建 `.venv-build-<arch>` → 装 `pyinstaller` + `packaging` → 生成/复用 `icon.icns` → 用 `arch -<arch>` 打单架构原生应用 → ad-hoc 重签（先二进制后整包）→ 去 quarantine → `codesign --verify --deep --strict` 校验 → 打包 `.dmg` 与 `.zip` 到 `dist/release/`。
 
 国内网络建议加镜像：
 
 ```bash
-PIP_INDEX_URL=https://pypi.tuna.tsinghua.edu.cn/simple \
-PYTHON=/usr/local/bin/python3.12 ./build_macos.sh
+PIP_INDEX_URL=https://pypi.tuna.tsinghua.edu.cn/simple ./build_macos.sh all
 ```
 
 ---
 
-## 6. 为什么不打 universal2
+## 6. 为什么分架构打 arm64 与 Intel x86_64，而不打 universal2
 
-`--target-arch universal2` 要求 Python 本身是 universal2 版本。python.org 官方 macOS 安装包、Homebrew 的 `python@3.1x` 在现代 arm64 Mac 上都是 **arm64-only**，universal2 会在 "Converting EXE to target arch" 阶段失败。本机就是 M 系列，直接出 arm64 更快更稳；真要 Intel 兼容，得换 universal2 Python 再改 `--target-arch universal2`。
+`--target-arch universal2` 会把两个架构全部塞进同一个二进制与依赖目录，单包体积接近翻倍。实际发布中拆分为原生 `arm64`（M 系列芯片）和原生 `x86_64`（Intel 老 Mac，最低 macOS 10.15），两边用户下载体积更小、无需在 M 芯片上拖家带口、也兼容只有单架构 Python 的自建环境；在安装有 `universal2` 版 python.org Python 与 Rosetta 2 的 Mac 上，`./build_macos.sh all` 可一次同时构建两个架构。
 
 ---
 

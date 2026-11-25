@@ -8,6 +8,9 @@ on:
     tags:
       - 'v*'
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: windows-latest
@@ -17,6 +20,14 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+
+      - name: 读取版本号
+        id: ver
+        shell: pwsh
+        run: |
+          $line = Select-String -Path source/patcher/constants.py -Pattern 'VERSION\s*=\s*"([^"]+)"' | Select-Object -First 1
+          $v = if ($line) { $line.Matches[0].Groups[1].Value } else { "1.4.0" }
+          "version=$v" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
 
       - name: 安装依赖
         run: |
@@ -28,20 +39,24 @@ jobs:
         run: |
           python -m PyInstaller --noconfirm --clean --onefile --windowed --name AGPatch --icon icon.ico --paths . --hidden-import packaging --hidden-import packaging.version gui_main.py
 
-      - name: 检查产物
+      - name: 检查与重命名产物
         working-directory: source
+        shell: pwsh
         run: |
           Get-ChildItem dist
           if (-not (Test-Path "dist/AGPatch.exe")) { throw "AGPatch.exe 没生成" }
+          Copy-Item "dist/AGPatch.exe" "dist/AGPatch-${{ steps.ver.outputs.version }}-Windows-x64.exe" -Force
 
       - uses: actions/upload-artifact@v4
         with:
           name: AGPatch-windows
-          path: source/dist/AGPatch.exe
+          path: |
+            source/dist/AGPatch.exe
+            source/dist/AGPatch-${{ steps.ver.outputs.version }}-Windows-x64.exe
           if-no-files-found: error
 
       - name: 附到 Release（打 tag 触发时）
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:
-          files: source/dist/AGPatch.exe
+          files: source/dist/AGPatch-${{ steps.ver.outputs.version }}-Windows-x64.exe

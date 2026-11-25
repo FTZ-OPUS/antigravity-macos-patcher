@@ -1,8 +1,10 @@
 # Сборка / venv
 .venv/
 .venv-build/
+.venv-build-*/
 build/
 dist/
+release/
 *.spec
 
 # Python
