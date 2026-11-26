@@ -16,6 +16,7 @@ import tkinter as tk
 from tkinter import font as tkfont
 
 import patch_ops as ops
+import auto_patch
 
 LOG_PATH = os.path.expanduser(
     "~/Library/Logs/反重力补丁.log" if sys.platform == "darwin"
@@ -109,6 +110,54 @@ class RoundButton(tk.Canvas):
         self.configure(cursor=CURSOR_HAND if on else "arrow")
 
 
+class ToggleSwitch(tk.Canvas):
+    """Canvas 手绘圆角拨动开关（macOS 风格）。"""
+
+    def __init__(self, master, command=None, width=48, height=28, bg="#F7F7FA"):
+        super().__init__(master, width=width, height=height,
+                         bg=bg, highlightthickness=0, bd=0)
+        self.command = command
+        self.cw, self.ch = width, height
+        self.checked = False
+        self.enabled = True
+
+        r = height / 2
+        self.track = self._pill(1, 1, width - 1, height - 1, r, fill="#D1D1D6", outline="")
+        self.knob = self.create_oval(3, 3, height - 3, height - 3, fill="#FFFFFF", outline="")
+        self.configure(cursor=CURSOR_HAND)
+        self.bind("<Button-1>", self._on_click)
+
+    def _pill(self, x1, y1, x2, y2, r, **kw):
+        pts = [
+            x1 + r, y1, x2 - r, y1, x2, y1, x2, y1 + r,
+            x2, y2 - r, x2, y2, x2 - r, y2, x1 + r, y2,
+            x1, y2, x1, y2 - r, x1, y1 + r, x1, y1,
+        ]
+        return self.create_polygon(pts, smooth=True, **kw)
+
+    def set_checked(self, value):
+        self.checked = bool(value)
+        pad = 3
+        d = self.ch - pad * 2
+        if self.checked:
+            x1 = self.cw - pad - d
+            track_fill = GREEN if self.enabled else "#A7DFB9"
+        else:
+            x1 = pad
+            track_fill = "#D1D1D6" if self.enabled else "#E5E5EA"
+        self.itemconfigure(self.track, fill=track_fill)
+        self.coords(self.knob, x1, pad, x1 + d, pad + d)
+
+    def set_enabled(self, on):
+        self.enabled = bool(on)
+        self.configure(cursor=CURSOR_HAND if self.enabled else "arrow")
+        self.set_checked(self.checked)
+
+    def _on_click(self, _=None):
+        if self.enabled and self.command:
+            self.command(not self.checked)
+
+
 class App:
     def __init__(self, root, target=""):
         self.root = root
@@ -122,7 +171,7 @@ class App:
 
         root.title("反重力补丁")
         root.configure(bg=BG)
-        root.geometry("440x486")
+        root.geometry("440x564")
         root.resizable(False, False)
         root.lift()
         try:
@@ -158,6 +207,19 @@ class App:
                                    fill="#4A4A4F", fill_hover="#3A3A3F")
         self.btn_off.pack()
 
+        # 更新后自动打补丁开关卡片
+        auto_box = tk.Frame(root, bg="#F7F7FA")
+        auto_box.pack(fill="x", padx=24, pady=(14, 0), ipady=9)
+        auto_text = tk.Frame(auto_box, bg="#F7F7FA")
+        auto_text.pack(side="left", padx=(14, 8), fill="x", expand=True)
+        tk.Label(auto_text, text="更新后自动打补丁", bg="#F7F7FA", fg=TEXT,
+                 font=(self.family, 13, "bold"), anchor="w").pack(fill="x")
+        self.auto_sub = tk.Label(auto_text, text="已关闭 · 检测到软件更新时不自动处理",
+                                 bg="#F7F7FA", fg=SUB, font=(self.family, 10), anchor="w")
+        self.auto_sub.pack(fill="x", pady=(2, 0))
+        self.auto_switch = ToggleSwitch(auto_box, command=self.on_toggle_auto, bg="#F7F7FA")
+        self.auto_switch.pack(side="right", padx=(0, 14))
+
         # 结果区
         self.result = tk.Label(root, text="", bg=BG, fg=SUB,
                                font=(self.family, 21, "bold"))
@@ -182,6 +244,7 @@ class App:
         tk.Frame(root, bg=LINE, height=1).pack(side="bottom", fill="x", padx=24, pady=(0, 8))
 
         self.refresh(initial=True)
+        self._schedule_auto_refresh()
 
     # ---------- 状态 ----------
     def set_state(self, state):
@@ -203,10 +266,35 @@ class App:
         self.busy = busy
         for b in (self.btn_on, self.btn_off, self.btn_refresh):
             b.set_enabled(not busy)
+        self.auto_switch.set_enabled(not busy)
         if busy:
             self.btn_open.set_enabled(False)
 
+    def refresh_auto_ui(self):
+        st = auto_patch.get_auto_status()
+        enabled = st["enabled"]
+        self.auto_switch.set_checked(enabled)
+        if enabled:
+            parts = ["后台监控中" if st["running"] else "已开启"]
+            if st["autostart"]:
+                parts.append("开机自启")
+            last = st.get("last_result")
+            if isinstance(last, dict) and last.get("time"):
+                t_short = last["time"][5:16]  # MM-DD HH:MM
+                parts.append(f"上次 {t_short} {'成功' if last.get('ok') else '失败'}")
+            self.auto_sub.configure(text=" · ".join(parts), fg=GREEN if st["running"] else SUB)
+        else:
+            self.auto_sub.configure(text="已关闭 · 仅手动开关补丁", fg=SUB)
+
+    def _schedule_auto_refresh(self):
+        def _tick():
+            if not self.busy:
+                self.refresh(initial=False)
+            self.root.after(4000, _tick)
+        self.root.after(4000, _tick)
+
     def refresh(self, initial=False):
+        self.refresh_auto_ui()
         path = ops.find_target(self._target)
         self.path = path
         if not path or not os.path.isfile(path):
@@ -232,7 +320,30 @@ class App:
         self._run("on")
 
     def do_disable(self):
+        # 用户主动还原原版时，先关闭自动补丁，防止后台监控立刻重新打回去
+        if auto_patch.load_config().get("enabled", False):
+            auto_patch.disable_auto_patch()
+            self.refresh_auto_ui()
         self._run("off")
+
+    def on_toggle_auto(self, want_on):
+        if self.busy:
+            return
+        if want_on:
+            ok, msg = auto_patch.enable_auto_patch(self._target)
+            self.refresh_auto_ui()
+            if ok:
+                self.set_result("自动补丁已开启", GREEN,
+                                f"{msg}。检测到 Antigravity 更新变回原版后将自动重打。")
+            else:
+                self.set_result("自动补丁开启失败", RED, msg)
+        else:
+            ok, msg = auto_patch.disable_auto_patch()
+            self.refresh_auto_ui()
+            if ok:
+                self.set_result("自动补丁已关闭", SUB, msg)
+            else:
+                self.set_result("自动补丁关闭失败", RED, msg)
 
     def do_open(self):
         if self.reopen_target:
@@ -304,10 +415,40 @@ class App:
 
 
 def main():
+    args = sys.argv[1:]
+    if "--watch" in args:
+        rest = [a for a in args if a != "--watch"]
+        target = rest[0] if rest else os.environ.get("AG_TARGET", "")
+        return auto_patch.run_watch_loop(target=target)
+
+    if "--auto-once" in args:
+        rest = [a for a in args if a != "--auto-once"]
+        target = rest[0] if rest else os.environ.get("AG_TARGET", "")
+        status, detail = auto_patch.check_and_auto_patch(
+            target=target,
+            wait_stable=False,
+            send_notification=False,
+            manage_app_lifecycle=not bool(target),
+        )
+        print(f"[auto-once] {status}: {detail}")
+        return 0 if status in ("patched", "already_patched") else 1
+
+    if "--enable-auto" in args:
+        rest = [a for a in args if a != "--enable-auto"]
+        target = rest[0] if rest else os.environ.get("AG_TARGET", "")
+        ok, msg = auto_patch.enable_auto_patch(target=target)
+        print(f"[enable-auto] {ok}: {msg}")
+        return 0 if ok else 1
+
+    if "--disable-auto" in args:
+        ok, msg = auto_patch.disable_auto_patch()
+        print(f"[disable-auto] {ok}: {msg}")
+        return 0 if ok else 1
+
     setup_log()
     target = os.environ.get("AG_TARGET", "")
-    if len(sys.argv) > 1:
-        target = sys.argv[1]
+    if args:
+        target = args[0]
     root = tk.Tk()
     App(root, target)
     root.mainloop()

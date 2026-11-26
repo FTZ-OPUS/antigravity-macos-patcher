@@ -93,24 +93,32 @@ def find_portable_candidates(search_type="ide"):
     max_dirs = 1500
 
     # Исключаем тяжелые/системные папки (предвычисляем множество имён в нижнем регистре)
+    # 注意：不要跳过 D:\Program Files 等非系统盘的 Program Files，否则装在 D:\Program Files 的软件会被漏掉
     prune_dirs = {
         ".git", "node_modules", "AppData", "Application Data", "Library",
-        "System Volume Information", "$RECYCLE.BIN", "Windows", "Program Files",
-        "Program Files (x86)", "usr", "var", "sys", "proc", "dev", "dist", "build",
+        "System Volume Information", "$RECYCLE.BIN", "Windows",
+        "usr", "var", "sys", "proc", "dev", "dist", "build",
         "__pycache__", ".idea", ".vscode"
     }
     prune_lower = {p.lower() for p in prune_dirs}
+    sys_drive = os.environ.get("SystemDrive", "C:").upper()
 
     for root in roots:
         if not os.path.isdir(root):
             continue
+        is_sys_drive = os.name == "nt" and os.path.abspath(root).upper().startswith(sys_drive)
         for dirpath, dirnames, filenames in os.walk(root):
             visited_dirs += 1
             if visited_dirs > max_dirs:
                 return candidates
 
             # Фильтруем dirnames на месте
-            dirnames[:] = [d for d in dirnames if d.lower() not in prune_lower and not d.startswith('.')]
+            dirnames[:] = [
+                d for d in dirnames
+                if d.lower() not in prune_lower
+                and not d.startswith('.')
+                and not (is_sys_drive and d.lower() in ("program files", "program files (x86)"))
+            ]
 
             # Вычисляем глубину относительно корня поиска
             try:

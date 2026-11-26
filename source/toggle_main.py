@@ -26,6 +26,7 @@ from patcher.utils.file import (
 from patcher.utils.atomic import atomic_replace_posix, apply_patches_to_data
 from patcher.manager.discovery import find_manager_binary
 from patcher.manager.patcher import MANAGER_GATE, get_status, _make_backup
+import auto_patch
 
 APP_NAME = "Antigravity"
 BAK_EXT = ".agybak"
@@ -245,12 +246,23 @@ def show_status(path):
         print(f"  当前状态：{color('？ 无法识别', COLOR_RED)}")
         default = "0"
 
+    auto_st = auto_patch.get_auto_status()
+    auto_on = auto_st["enabled"]
+    if auto_on:
+        auto_desc = "● 已开启（后台监控中）" if auto_st["running"] else "● 已开启"
+        print(f"  自动补丁：{color(auto_desc, COLOR_GREEN)}")
+    else:
+        print(f"  自动补丁：{color('○ 已关闭', COLOR_DIM)}")
+
     print()
     _rule()
     print(f"  {color('[1]', COLOR_GREEN, COLOR_BOLD)} 开启补丁  "
           f"{color('（不支持地区的账号用）', COLOR_DIM)}")
     print(f"  {color('[2]', COLOR_YELLOW, COLOR_BOLD)} 关闭补丁  "
           f"{color('（还原原版，支持地区的账号用）', COLOR_DIM)}")
+    auto_action = "关闭更新后自动补丁" if auto_on else "开启更新后自动补丁"
+    print(f"  {color('[3]', COLOR_CYAN, COLOR_BOLD)} {auto_action}  "
+          f"{color('（后台监控更新并自动重打）', COLOR_DIM)}")
     print(f"  {color('[0]', COLOR_RED, COLOR_BOLD)} 退出")
     _rule()
     return state, bundle, default
@@ -343,6 +355,11 @@ def verify_and_report(path, choice, bundle, untouched=False):
 
 
 def main():
+    if "--watch" in sys.argv[1:]:
+        rest = [a for a in sys.argv[1:] if a != "--watch"]
+        target = rest[0] if rest else os.environ.get("AG_TARGET", "")
+        return auto_patch.run_watch_loop(target=target)
+
     setup_console()
     log_path = start_log()
 
@@ -367,10 +384,28 @@ def main():
         print("  已取消。")
         return 0
 
+    if choice == "3":
+        print()
+        if auto_patch.load_config().get("enabled", False):
+            res_ok, msg = auto_patch.disable_auto_patch()
+        else:
+            res_ok, msg = auto_patch.enable_auto_patch(os.environ.get("AG_TARGET", ""))
+        if res_ok:
+            ok(msg)
+        else:
+            err(msg)
+        print()
+        ask("  按回车退出…")
+        return 0 if res_ok else 1
+
     if choice not in ("1", "2"):
         err("无效选项。")
         ask("按回车退出…")
         return 1
+
+    if choice == "2" and auto_patch.load_config().get("enabled", False):
+        auto_patch.disable_auto_patch()
+        info("已同步关闭「更新后自动补丁」，避免还原原版后被自动重打。")
 
     # 目标状态与当前一致 → 仍然要做一次复核并给出明确结论（不能只说"无需操作"）
     if (choice == "1" and state == "patched") or (choice == "2" and state == "unpatched"):

@@ -40,7 +40,29 @@ def _win_candidate_dirs():
     scoop = os.environ.get("SCOOP", "")
     if scoop:
         out.append(os.path.join(scoop, "apps"))
-    return [p for p in out if p and os.path.isdir(p)]
+
+    # 覆盖所有盘符的根目录与常见安装目录（如 D:\, D:\Program Files, D:\Tools 等）
+    try:
+        from patcher.manager.discovery import _win_logical_drives
+        common_sub = ("", "Program Files", "Program Files (x86)", "Programs", "Software", "Apps", "Tools")
+        for drive in _win_logical_drives():
+            for sub in common_sub:
+                p = os.path.join(drive, sub) if sub else drive
+                if os.path.isdir(p):
+                    out.append(p)
+    except Exception:
+        pass
+
+    seen = set()
+    unique = []
+    for p in out:
+        if not p or not os.path.isdir(p):
+            continue
+        key = os.path.normcase(os.path.abspath(p))
+        if key not in seen:
+            seen.add(key)
+            unique.append(p)
+    return unique
 
 
 def _posix_candidate_dirs():
